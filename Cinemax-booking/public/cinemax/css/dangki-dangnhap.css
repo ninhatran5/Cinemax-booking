@@ -1,0 +1,24 @@
+body {
+    background: #e9ebee;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.facebook-header {
+    padding: 10px 10px;
+    color: white;
+}
+.facebook-header input {
+    margin-left: 10px;
+}
+.container-box {
+    margin-top: 60px;
+}
+.login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.form-control {
+    border-radius: 0;
+}
+
