@@ -52,7 +52,7 @@
                 @include('admin.admin-block.admin-nav')
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
-                <div class="content-wrapper">
+                <div class="content-wrapper" style="background-color: #ffffff;">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
                         @yield('content')
