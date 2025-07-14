@@ -1,23 +1,29 @@
 @extends('admin.home')
 
 @section('content')
-<div class="container mt-4">
-    <h4>Cập nhật phòng chiếu</h4>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning fw-semibold">Cập nhật phòng chiếu</div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.rooms.update', $room->id) }}">
+                    @csrf
+                    @method('PUT')
 
-    <form method="POST" action="{{ route('admin.rooms.update', $room->id) }}">
-        @csrf @method('PUT')
-        <div class="mb-3">
-            <label for="name">Tên phòng</label>
-            <input type="text" name="name" class="form-control" value="{{ $room->name }}" required>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Tên phòng</label>
+                        <input type="text" name="name" class="form-control" value="{{ $room->name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Sức chứa</label>
+                        <input type="number" name="capacity" class="form-control" value="{{ $room->capacity }}" required
+                            min="1">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <a href="{{ route('admin.rooms.index') }}" class="btn btn-secondary">Quay lại</a>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="capacity">Sức chứa</label>
-            <input type="number" name="capacity" class="form-control" value="{{ $room->capacity }}">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
-        <a href="{{ route('admin.rooms.index') }}" class="btn btn-secondary">Quay lại</a>
-    </form>
-</div>
+    </div>
 @endsection

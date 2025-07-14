@@ -1,4 +1,6 @@
-<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar"
+    style="background-color: rgb(234, 234, 234);">
+
     <div class="container-xxl">
 
 
@@ -37,8 +39,8 @@
 
                 <!-- Notification -->
                 <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                        data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-expanded="false">
                         <i class="bx bx-bell bx-sm"></i>
                         <span class="badge bg-danger rounded-pill badge-notifications">5</span>
                     </a>

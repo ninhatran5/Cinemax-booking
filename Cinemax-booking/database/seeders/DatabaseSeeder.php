@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+    // php artisan migrate:fresh --seed
     public function run(): void
     {
         // User::factory(10)->create();
