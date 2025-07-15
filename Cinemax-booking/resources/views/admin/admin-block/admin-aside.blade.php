@@ -46,7 +46,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/admin/showtimes" class="menu-link">
+                    <a href="{{ route('admin.showtimes.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-time"></i>
                         <div>Lịch chiếu phim</div>
                     </a>

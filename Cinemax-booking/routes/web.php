@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MovieController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Admin\ShowtimeController;
 
 Route::get('/admin', function () {
     return view('admin.home');
@@ -30,12 +31,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [MovieController::class, 'index'])->name('index');
         Route::get('/create', [MovieController::class, 'create'])->name('create');
         Route::post('/', [MovieController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [MovieController::class, 'edit'])->name('edit');
+        Route::get('/edit/{id}', [MovieController::class, 'edit'])->name('edit');
         Route::put('/{id}', [MovieController::class, 'update'])->name('update');
         Route::delete('/{id}', [MovieController::class, 'destroy'])->name('destroy');
         Route::get('/trash', [MovieController::class, 'trash'])->name('trash');
         Route::put('/restore/{id}', [MovieController::class, 'restore'])->name('restore');
         Route::delete('/force/{id}', [MovieController::class, 'forceDelete'])->name('forceDelete');
+    });
+    Route::prefix('showtimes')->name('showtimes.')->group(function () {
+        Route::get('/', [ShowtimeController::class, 'index'])->name('index');
+        Route::get('/create', [ShowtimeController::class, 'create'])->name('create');
+        Route::post('/', [ShowtimeController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ShowtimeController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ShowtimeController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ShowtimeController::class, 'destroy'])->name('destroy');
     });
 });
 Route::get('/', function () {
