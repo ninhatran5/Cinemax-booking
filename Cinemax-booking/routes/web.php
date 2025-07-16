@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\Admin\MovieController;
@@ -75,6 +76,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/edit/{id}', [ShowtimeController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ShowtimeController::class, 'update'])->name('update');
             Route::delete('/{id}', [ShowtimeController::class, 'destroy'])->name('destroy');
+        });
+        // QUẢN LÝ BANNERS
+        Route::prefix('banners')->name('banners.')->group(function () {
+            Route::get('/', [BannerController::class, 'index'])->name('index');
+            Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('edit');
+            Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
         });
     });
 });

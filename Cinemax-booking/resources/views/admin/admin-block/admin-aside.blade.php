@@ -1,5 +1,8 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="background-color: rgb(234, 234, 234);">
 
+    @php
+        $routePrefix = request()->route() ? request()->route()->getName() : '';
+    @endphp
 
     <div class="app-brand demo ">
         <a href="" class="app-brand-link">
@@ -9,9 +12,7 @@
         </a>
     </div>
 
-
-    <div class="menu-divider mt-0  ">
-    </div>
+    <div class="menu-divider mt-0  "></div>
 
     <div class="menu-inner-shadow"></div>
 
@@ -27,7 +28,13 @@
         </li>
 
         <!-- System Management Dropdown -->
-        <li class="menu-item menu-dropdown">
+        <li class="menu-item menu-dropdown
+            {{ Str::startsWith($routePrefix, 'admin.movies') ||
+               Str::startsWith($routePrefix, 'admin.rooms') ||
+               Str::startsWith($routePrefix, 'admin.showtimes') ||
+               Str::startsWith($routePrefix, 'admin.seats') ||
+               Str::startsWith($routePrefix, 'admin.banners')
+                ? 'open active' : '' }}">
             <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div>Quản lý hệ thống</div>
@@ -69,12 +76,15 @@
                         <div>Quản lý ghế đã đặt trong từng đơn đặt</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.banners.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-image"></i>
+                        <div>Quản lý banner</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
-
     </ul>
-
-
 
 </aside>
