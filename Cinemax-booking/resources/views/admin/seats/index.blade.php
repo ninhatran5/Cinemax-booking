@@ -28,7 +28,7 @@
                 <h2 class="accordion-header" id="headingFilter">
                     <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
-                         Bộ lọc & Xoá hàng ghế
+                        Bộ lọc & Xoá hàng ghế
                     </button>
                 </h2>
                 <div id="collapseFilter" class="accordion-collapse collapse show" aria-labelledby="headingFilter"
@@ -115,6 +115,8 @@
                                 <th>Tên ghế</th>
                                 <th>Loại</th>
                                 <th>Phòng</th>
+                                <th>X</th>
+                                <th>Y</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -143,6 +145,8 @@
                                         @endswitch
                                     </td>
                                     <td>{{ $seat->room->name ?? 'Không xác định' }}</td>
+                                    <td>{{ $seat->position_x }}</td>
+                                    <td>{{ $seat->position_y }}</td>
                                     <td>
                                         <a href="{{ route('admin.seats.edit', $seat->id) }}"
                                             class="btn btn-sm btn-outline-warning me-1">

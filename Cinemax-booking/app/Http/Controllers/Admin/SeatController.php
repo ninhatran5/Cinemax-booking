@@ -21,7 +21,6 @@ class SeatController extends Controller
             $query->where('room_id', $request->room_id);
         }
 
-        // ⚠️ Sắp xếp theo thời gian tạo mới nhất lên đầu
         $seats = $query->orderBy('created_at', 'desc')
             ->paginate(20)
             ->appends($request->query());
@@ -50,11 +49,9 @@ class SeatController extends Controller
         $seatType = $request->seat_type;
         $seatsPerRow = intval($request->seats_per_row);
 
-        // Chuẩn hóa hàng ghế (VD: A,B,C => ['A','B','C'])
         $rowLetters = array_map('trim', explode(',', strtoupper($request->rows)));
         $totalToCreate = count($rowLetters) * $seatsPerRow;
 
-        // Đếm số ghế hiện tại của phòng
         $currentCount = $room->seats()->count();
 
         if (($currentCount + $totalToCreate) > $room->capacity) {
@@ -72,6 +69,8 @@ class SeatController extends Controller
                     'name' => $rowLetter . $i,
                     'seat_type' => $seatType,
                     'row' => $rowLetter,
+                    'position_x' => $i,
+                    'position_y' => ord($rowLetter) - 64, // A=1, B=2, ...
                 ]);
             }
         }
@@ -94,11 +93,16 @@ class SeatController extends Controller
             'row' => 'nullable|string|max:2',
         ]);
 
+        $rowLetter = $request->input('row') ?? substr($request->input('name'), 0, 1);
+        $seatNumber = intval(substr($request->input('name'), 1));
+
         $seat->update([
             'room_id' => $request->input('room_id'),
             'name' => $request->input('name'),
             'seat_type' => $request->input('seat_type'),
-            'row' => $request->input('row') ?? substr($request->input('name'), 0, 1),
+            'row' => $rowLetter,
+            'position_x' => $seatNumber,
+            'position_y' => ord($rowLetter) - 64,
         ]);
 
         return redirect()->route('admin.seats.index')->with('success', 'Cập nhật ghế thành công!');
@@ -109,6 +113,7 @@ class SeatController extends Controller
         $seat->delete();
         return redirect()->route('admin.seats.index')->with('success', 'Đã xóa ghế!');
     }
+
     public function deleteRow(Request $request)
     {
         $request->validate([
