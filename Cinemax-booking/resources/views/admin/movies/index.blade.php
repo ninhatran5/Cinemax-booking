@@ -63,7 +63,8 @@
                         </td>
                         <td>
                             @if ($movie->image)
-                                <img src="{{ asset('storage/' . $movie->image) }}" width="80">
+                                <img src="{{ asset('storage/' . $movie->image) }}" width="50"
+                                    alt="{{ $movie->title }}">
                             @endif
                         </td>
                         <td>

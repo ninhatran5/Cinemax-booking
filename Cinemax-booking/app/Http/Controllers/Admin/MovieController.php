@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
@@ -70,6 +71,12 @@ class MovieController extends Controller
         $data = $request->only(['title', 'description', 'duration', 'status']);
 
         if ($request->hasFile('image')) {
+            //  Xoá ảnh cũ nếu có
+            if ($movie->image && Storage::disk('public')->exists($movie->image)) {
+                Storage::disk('public')->delete($movie->image);
+            }
+
+            //  Lưu ảnh mới
             $data['image'] = $request->file('image')->store('uploads/movies', 'public');
         }
 
