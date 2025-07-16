@@ -51,8 +51,6 @@
     </div>
 
     @include('client.block.header')
-    @include('client.block.slide')
-    @include('client.block.category-show')
     @yield('content')
     @include('client.block.footer')
     @include('client.block.footer-bottom')

@@ -151,3 +151,33 @@
         </div>
         <!-- kết thúc nav -->
     </header>
+<!-- Icon Profile -->
+{{-- <li>
+    @auth
+        <a href="{{ route('profile') }}"
+            class="bg-light d-flex align-items-center justify-content-center mx-2 p-0"
+            title="Tài khoản"
+            style="width:48px;height:48px;min-width:48px;min-height:48px;border-radius:50%;">
+            <!-- icon SVG giữ nguyên -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" />
+            </svg>
+        </a>
+    @endauth
+
+    @guest
+        <a href="{{ route('login') }}"
+            class="bg-light d-flex align-items-center justify-content-center mx-2 p-0"
+            title="Đăng nhập"
+            style="width:48px;height:48px;min-width:48px;min-height:48px;border-radius:50%;">
+            <!-- icon SVG giữ nguyên -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" />
+            </svg>
+        </a>
+    @endguest
+</li> --}}
