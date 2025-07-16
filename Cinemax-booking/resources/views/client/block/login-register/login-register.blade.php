@@ -31,19 +31,12 @@
                 </form>
             </div>
 
-            <!-- Thanh ngang phân cách -->
-            <hr class="my-4">
-
+            <br>
             <!-- Main Content -->
             <div class="row justify-content-between">
                 <!-- Left -->
                 <div class="col-lg-6 mb-4">
-                    <h3>Log in with your phone</h3>
-                    <p>
-                        - No password needed.<br />
-                        - If you use Facebook on your phone, you can use your phone to log in here.
-                    </p>
-                    <button class="btn btn-primary">Log in with your Phone</button>
+
                 </div>
 
                 <!-- Right -->
@@ -72,13 +65,11 @@
                             <button class="btn btn-success w-100" type="submit">Tạo tài khoản</button>
                         </form>
 
-                        <small class="d-block text-center mt-3">
-                            <a href="#">Create a Page</a> for a celebrity, band or business.
-                        </small>
+
                     </div>
                 </div>
             </div>
-
+            <br><br>
             <!-- Footer -->
             @include('client.block.footer')
             @include('client.block.footer-bottom')
