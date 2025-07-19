@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [ // guard riêng cho admin
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
