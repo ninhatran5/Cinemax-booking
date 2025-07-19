@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->string('name'); // A1, A2, B1...
-            $table->string('row', 2);
+            $table->string('row', 2); // hàng ghế (A, B, C...)
             $table->enum('seat_type', ['normal', 'vip', 'double'])->default('normal');
             $table->integer('position_x')->nullable(); // vị trí hiển thị (nếu cần)
             $table->integer('position_y')->nullable();

@@ -13,10 +13,15 @@ class Seat extends Model
         'seat_type',
         'position_x',
         'position_y',
+        'price',
     ];
 
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+    public function bookingSeats()
+    {
+        return $this->hasMany(Booking_seats::class);
     }
 }
