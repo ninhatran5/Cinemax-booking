@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+
 class ClientAuthController extends Controller
 {
     public function showLoginForm()
@@ -21,7 +22,7 @@ class ClientAuthController extends Controller
             'password' => ['required'],
         ]);
         $credentials['role'] = 'user';
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect('/');
         }
@@ -49,9 +50,9 @@ class ClientAuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout(); // ✅ Logout đúng guard client
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect()->route('client.login'); // 🔁 Đưa về đúng route name
     }
 }

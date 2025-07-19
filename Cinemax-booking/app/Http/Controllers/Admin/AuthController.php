@@ -8,11 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    /**
+     * Hiển thị form đăng nhập admin
+     */
     public function showLoginForm()
     {
-        return view('admin.login');
+        return view('admin.login'); // Đảm bảo file view này tồn tại
     }
 
+    /**
+     * Xử lý đăng nhập admin
+     */
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -21,11 +27,11 @@ class AuthController extends Controller
                 'password' => ['required'],
             ]);
 
-            $credentials['role'] = 'admin';
+            $credentials['role'] = 'admin'; // Đảm bảo cột role trong DB là 'admin'
 
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-                return redirect()->route('admin.home');
+            if (Auth::guard('admin')->attempt($credentials)) {
+                $request->session()->regenerate(); // Tạo session mới để bảo mật
+                return redirect()->route('admin.home'); // Điều hướng sau khi đăng nhập thành công
             }
 
             return back()->withErrors([
@@ -36,11 +42,14 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
+    /**
+     * Đăng xuất admin
+     */
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('admin.login');
+        Auth::guard('admin')->logout(); // Sử dụng đúng guard
+        $request->session()->invalidate(); // Xoá session hiện tại
+        $request->session()->regenerateToken(); // Tạo CSRF token mới
+        return redirect()->route('admin.login'); // Quay lại trang đăng nhập
     }
 }

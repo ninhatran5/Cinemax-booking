@@ -11,10 +11,11 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        // Dùng guard 'admin' thay vì mặc định
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Bạn không có quyền truy cập.');
+        return redirect()->route('admin.login.form')->with('error', 'Bạn không có quyền truy cập.');
     }
 }
