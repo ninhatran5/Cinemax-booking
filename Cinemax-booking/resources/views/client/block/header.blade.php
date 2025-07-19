@@ -70,6 +70,29 @@
         font-size: 1rem;
         margin-bottom: 0;
     }
+
+    .menu-list .nav-link {
+        font-size: 12px;
+        /* Nhỏ hơn mặc định */
+        padding: 5px 10px;
+        /* Ít padding hơn */
+    }
+
+    .menu-list .dropdown-menu {
+        font-size: 12px;
+        /* Dropdown cũng nhỏ hơn */
+    }
+
+    .menu-list {
+        gap: 0.75rem !important;
+        /* Giảm khoảng cách giữa các mục */
+    }
+
+    @media (max-width: 576px) {
+        .menu-list .nav-link {
+            font-size: 13px;
+        }
+    }
 </style>
 
 <header>
@@ -93,8 +116,7 @@
                         </form>
                     </div>
                     <div class="col-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
                         </svg>
@@ -122,8 +144,7 @@
                                             d="M14 13.5c0 1-1 1.5-6 1.5s-6-.5-6-1.5S4 10 8 10s6 2.5 6 3.5z" />
                                     </svg>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow"
-                                    aria-labelledby="userDropdown">
+                                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdown">
                                     <li class="px-3 pt-2 small text-muted">Xin chào,</li>
                                     <li class="px-3 pb-2 fw-semibold text-dark">{{ Auth::user()->name }}</li>
                                     <li>
@@ -143,8 +164,8 @@
 
                         @guest
                             <a href="{{ route('client.login') }}" class="nav-link user-icon-toggle no-arrow">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    class="bi bi-person" viewBox="0 0 16 16">
                                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                                     <path fill-rule="evenodd"
                                         d="M14 13.5c0 1-1 1.5-6 1.5s-6-.5-6-1.5S4 10 8 10s6 2.5 6 3.5z" />
@@ -179,10 +200,10 @@
                                 <li class="nav-item">
                                     <a href="#kids" class="nav-link">Giá Vé</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="#accessories" class="nav-link">Phiếu Giảm Giá</a>
-                                </li>
-                                <li class="nav-item dropdown">
+                                </li> --}}
+                                {{-- <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" role="button" id="pages"
                                         data-bs-toggle="dropdown" aria-expanded="false">Thể Loại Phim</a>
                                     <ul class="dropdown-menu" aria-labelledby="pages">
@@ -190,7 +211,7 @@
                                         <li><a href="#" class="dropdown-item">Hài</a></li>
                                         <li><a href="#" class="dropdown-item">Tình Cảm</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a href="#brand" class="nav-link">Giới Thiệu</a>
                                 </li>
