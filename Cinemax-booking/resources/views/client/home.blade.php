@@ -37,4 +37,12 @@
             @endforeach
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="seatModal" tabindex="-1" aria-labelledby="seatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="seatModalContent">
+                <!-- Nội dung ghế sẽ được load vào đây -->
+            </div>
+        </div>
+    </div>
 @endsection

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Client\ClientBookingController;
 use App\Http\Controllers\Client\ClientMovieController;
 
 /*
@@ -112,3 +113,7 @@ Route::post('/register', [ClientAuthController::class, 'register'])->name('clien
 
 // Đăng xuất
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
+Route::get('/chon-ghe-modal/{showtime}', [ClientBookingController::class, 'loadSeatModal'])->name('client.booking.modal');
+Route::post('/dat-ve/{showtime}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
+
+
