@@ -26,31 +26,44 @@ class ClientBookingController extends Controller
         return view('client.booking.modal_content', compact('showtime', 'bookedSeatIds', 'user'));
     }
 
-    
-    public function storeBooking(Request $request)
+
+    public function storeBooking(Request $request, $showtimeId)
     {
-        // Validate dữ liệu
         $request->validate([
-            'showtime_id' => 'required|exists:showtimes,id',
-            'seat_ids' => 'required|array',
-            'seat_ids.*' => 'exists:seats,id',
+            'seats' => 'required|array',
+            'seats.*' => 'exists:seats,id',
         ]);
+
+        $selectedSeatIds = $request->seats;
+
+        // Lấy danh sách ghế đã đặt cho suất chiếu này
+        $bookedSeatIds = BookingSeat::whereHas('booking', function ($q) use ($showtimeId) {
+            $q->where('showtime_id', $showtimeId);
+        })->pluck('seat_id')->toArray();
+
+        // Kiểm tra nếu có ghế đã bị người khác đặt rồi
+        $conflictedSeats = array_intersect($selectedSeatIds, $bookedSeatIds);
+
+        if (count($conflictedSeats) > 0) {
+            return redirect()->back()->withErrors(['seats' => 'Một số ghế bạn chọn đã có người đặt. Vui lòng chọn lại.']);
+        }
 
         // Tạo booking
         $booking = Booking::create([
             'user_id' => Auth::id(),
-            'showtime_id' => $request->showtime_id,
+            'showtime_id' => $showtimeId,
             'booking_time' => now(),
+            'total_price' => 0, // bạn có thể tính tổng sau
         ]);
 
-        // Gán ghế cho booking
-        foreach ($request->seat_ids as $seatId) {
+        foreach ($selectedSeatIds as $seatId) {
             BookingSeat::create([
                 'booking_id' => $booking->id,
                 'seat_id' => $seatId,
+                'price' => 50000, // tuỳ ghế, bạn có thể tính theo loại
             ]);
         }
 
-        return redirect()->back()->with('success', 'Đặt vé thành công!');
+        return redirect()->route('client.home')->with('success', 'Đặt vé thành công!');
     }
 }
