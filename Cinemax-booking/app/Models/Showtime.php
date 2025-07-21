@@ -19,7 +19,7 @@ class Showtime extends Model
     }
 
     // Nếu sau này bạn có bảng bookings thì:
-    // public function bookings() {
-    //     return $this->hasMany(Booking::class);
-    // }
+    public function bookings() {
+        return $this->hasMany(Booking::class);
+    }
 }
