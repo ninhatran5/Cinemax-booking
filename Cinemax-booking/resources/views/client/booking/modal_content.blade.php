@@ -4,21 +4,31 @@
 </div>
 <form action="{{ route('client.booking.store', $showtime->id) }}" method="POST">
     @csrf
-    <div class="modal-body">
-        <div class="d-flex flex-wrap" style="max-width: 500px;">
-            @foreach ($showtime->room->seats as $seat)
-                @php $isBooked = in_array($seat->id, $bookedSeatIds); @endphp
-                <div style="width: 50px; margin: 4px;">
-                    <input type="checkbox" id="seat{{ $seat->id }}" name="seats[]" value="{{ $seat->id }}"
-                        {{ $isBooked ? 'disabled' : '' }}>
-                    <label for="seat{{ $seat->id }}"
-                        class="btn btn-sm {{ $isBooked ? 'btn-danger' : 'btn-outline-primary' }}" style="width: 100%;">
-                        {{ $seat->name }}
-                    </label>
+    <div class="d-flex flex-column gap-2">
+        @php
+            // Nhóm ghế theo hàng (ví dụ: A, B, C)
+            $seatsByRow = $showtime->room->seats->groupBy('row');
+        @endphp
+
+        @foreach ($seatsByRow as $rowName => $seats)
+            <div>
+                <strong>Hàng {{ $rowName }}:</strong>
+                <div class="d-flex flex-wrap">
+                    @foreach ($seats as $seat)
+                        @php $isBooked = in_array($seat->id, $bookedSeatIds); @endphp
+                        <div style="width: 50px; margin: 4px;">
+                            <input type="checkbox" id="seat{{ $seat->id }}" name="seats[]" value="{{ $seat->id }}"
+                                {{ $isBooked ? 'disabled' : '' }}>
+                            <label for="seat{{ $seat->id }}"
+                                class="btn btn-sm {{ $isBooked ? 'btn-danger' : 'btn-outline-primary' }}"
+                                style="width: 100%;">
+                                {{ $seat->name }}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
-        
+            </div>
+        @endforeach
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
