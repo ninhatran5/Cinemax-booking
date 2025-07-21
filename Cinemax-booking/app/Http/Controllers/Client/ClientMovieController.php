@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Banner;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use App\Models\Showtime;
 
-class HomeController extends Controller
+class ClientMovieController extends Controller
 {
     public function index(Request $request)
     {
-        $banners = Banner::where('status', 'active')->orderBy('id')->take(5)->get();
     
         // Lấy danh sách ngày có lịch chiếu
         $dates = Showtime::select('show_date')->distinct()->orderBy('show_date')->pluck('show_date');
@@ -29,6 +27,6 @@ class HomeController extends Controller
         }])
         ->get();
     
-        return view('client.home', compact('banners', 'movies', 'dates', 'selectedDate'));
+        return view('client.movie', compact( 'movies', 'dates', 'selectedDate'));
     }
 }

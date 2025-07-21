@@ -6,7 +6,7 @@
 
     <div class="app-brand demo ">
         <a href="" class="app-brand-link">
-            <a href="/" style="width: 150px">
+            <a href="" style="width: 150px">
                 <img src="{{ asset('cinemax/images/logo.png') }}" alt="logo" class="img-fluid">
             </a>
         </a>
@@ -58,8 +58,8 @@
                         <div>Lịch chiếu phim</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="/admin/bookings" class="menu-link">
+                <li class="menu-item {{ Str::startsWith($routePrefix, 'admin.bookings') ? 'active' : '' }}">
+                    <a href="{{ route('admin.bookings.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-book-content"></i>
                         <div>Đơn đặt vé của khách</div>
                     </a>

@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Client\ClientMovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('edit');
             Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
         });
+
+        // QUẢN LÝ ĐẶT VÉ
+        Route::resource('bookings', BookingController::class)->only(['index', 'show', 'destroy']);
     });
 });
 
@@ -95,6 +100,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Trang chủ client
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
+Route::get('/movie', [ClientMovieController::class, 'index'])->name('client.movie');
+
 
 // Đăng nhập
 Route::get('/login', [ClientAuthController::class, 'showLoginForm'])->name('client.login');

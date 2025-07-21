@@ -115,6 +115,7 @@
                                 <th>Tên ghế</th>
                                 <th>Loại</th>
                                 <th>Phòng</th>
+                                <th>Giá vé</th>
                                 <th>X</th>
                                 <th>Y</th>
                                 <th>Hành động</th>
@@ -145,6 +146,7 @@
                                         @endswitch
                                     </td>
                                     <td>{{ $seat->room->name ?? 'Không xác định' }}</td>
+                                    <td>{{ number_format($seat->price) }}đ</td>
                                     <td>{{ $seat->position_x }}</td>
                                     <td>{{ $seat->position_y }}</td>
                                     <td>

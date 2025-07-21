@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('content')
-    @include('client.block.slide')
+
     <div class="container">
     <h2>Phim đang chiếu</h2>
     <div class="d-flex mb-3">
         @foreach($dates as $date)
             <a href="{{ route('client.home', ['date' => $date]) }}">
-                <button class="btn btn me-2 {{ $selectedDate == $date ? 'btn-primary' : '' }}">
+                <button class="btn btn me-2 {{ $selectedDate == $date ? 'btn    ' : '' }}">
                     {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                 </button>
             </a>

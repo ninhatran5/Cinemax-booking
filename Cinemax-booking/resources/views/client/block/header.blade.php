@@ -192,10 +192,10 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
                                 <li class="nav-item active">
-                                    <a href="#women" class="nav-link">Trang Chủ</a>
+                                    <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#men" class="nav-link">Phim</a>
+                                    <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#kids" class="nav-link">Giá Vé</a>

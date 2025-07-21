@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('booking_seats', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // tên phòng chiếu
-            $table->integer('capacity'); // sức chứa
-            $table->softDeletes(); // xoá mềm
+            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
+            $table->foreignId('seat_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('price');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('booking_seats');
     }
 };
