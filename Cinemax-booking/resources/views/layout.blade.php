@@ -61,6 +61,18 @@
     </script>
     <script src="{{ asset('cinemax/js/plugins.js') }}"></script>
     <script src="{{ asset('cinemax/js/script.js') }}"></script>
+    <script>
+        function openSeatModal(showtimeId) {
+            fetch('/chon-ghe-modal/' + showtimeId)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('seatModalContent').innerHTML = html;
+                    let modal = new bootstrap.Modal(document.getElementById('seatModal'));
+                    modal.show();
+                });
+        }
+    </script>
+    
 </body>
 
 </html>
