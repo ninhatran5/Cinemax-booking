@@ -28,28 +28,60 @@
         </li>
 
         <!-- System Management Dropdown -->
-        <li class="menu-item menu-dropdown
-            {{ Str::startsWith($routePrefix, 'admin.movies') ||
-               Str::startsWith($routePrefix, 'admin.rooms') ||
-               Str::startsWith($routePrefix, 'admin.showtimes') ||
-               Str::startsWith($routePrefix, 'admin.seats') ||
-               Str::startsWith($routePrefix, 'admin.banners')
-                ? 'open active' : '' }}">
+        <li
+            class="menu-item menu-dropdown
+            {{ Str::startsWith($routePrefix, 'admin.rooms') ||
+            Str::startsWith($routePrefix, 'admin.seats') ||
+            Str::startsWith($routePrefix, 'admin.seat-types')
+                ? 'open active'
+                : '' }}">
+
             <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div>Quản lý hệ thống</div>
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item">
+                    <a href="{{ route('admin.rooms.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-door-open"></i>
+                        <div>Phòng chiếu</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.seat-types.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-category"></i>
+                        <div>Loại ghế</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.seats.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-chair"></i>
+                        <div>Quản lý ghế trong từng phòng chiếu</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.banners.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-image"></i>
+                        <div>Quản lý banner</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li
+            class="menu-item menu-dropdown
+            {{ Str::startsWith($routePrefix, 'admin.movies') || Str::startsWith($routePrefix, 'admin.showtimes')
+                ? 'open active'
+                : '' }}">
+            <a href="#" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-cog"></i>
+                <div>Quản lý phim</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="{{ route('admin.movies.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-film"></i>
                         <div>Quản lý phim</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.rooms.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-door-open"></i>
-                        <div>Phòng chiếu</div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -62,24 +94,6 @@
                     <a href="{{ route('admin.bookings.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-book-content"></i>
                         <div>Đơn đặt vé của khách</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.seats.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-chair"></i>
-                        <div>Quản lý ghế trong từng phòng chiếu</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/admin/booking-seats" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-link"></i>
-                        <div>Quản lý ghế đã đặt trong từng đơn đặt</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.banners.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-image"></i>
-                        <div>Quản lý banner</div>
                     </a>
                 </li>
             </ul>

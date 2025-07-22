@@ -67,13 +67,51 @@
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('seatModalContent').innerHTML = html;
+
                     let modal = new bootstrap.Modal(document.getElementById('seatModal'));
                     modal.show();
+
+                    initSeatSelection();
                 });
+        }
+
+        function initSeatSelection() {
+            const checkboxes = document.querySelectorAll('input[name="seats[]"]');
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener("change", function() {
+                    const label = document.querySelector(`label[for="${checkbox.id}"]`);
+
+                    if (checkbox.checked) {
+                        label.classList.remove("btn-seat-available");
+                        label.classList.add("btn-seat-selected");
+                    } else {
+                        label.classList.remove("btn-seat-selected");
+                        label.classList.add("btn-seat-available");
+                    }
+
+                    updateSeatInfo();
+                });
+            });
+
+            function updateSeatInfo() {
+                const selected = Array.from(document.querySelectorAll('input[name="seats[]"]:checked'));
+                const seatNames = selected.map(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`);
+                    return label ? label.textContent.trim() : '';
+                });
+
+                const seatCount = selected.length;
+                const pricePerSeat = 50000;
+                const total = seatCount * pricePerSeat;
+
+                document.getElementById('selected-seats').innerText = seatNames.join(', ') || '---';
+                document.getElementById('total-price').innerText = total.toLocaleString('vi-VN') + 'đ';
+            }
         }
     </script>
 
-    
+
 </body>
 
 </html>
