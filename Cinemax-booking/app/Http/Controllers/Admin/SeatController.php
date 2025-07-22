@@ -49,7 +49,7 @@ class SeatController extends Controller
         ]);
 
         $room = Room::findOrFail($request->room_id);
-        $seatTypeId = $request->seat_type_id;
+        $seatType = SeatType::findOrFail($request->seat_type_id);
         $seatsPerRow = intval($request->seats_per_row);
         $rowLetters = array_map('trim', explode(',', strtoupper($request->rows)));
         $totalToCreate = count($rowLetters) * $seatsPerRow;
@@ -64,14 +64,15 @@ class SeatController extends Controller
         }
 
         foreach ($rowLetters as $rowLetter) {
+            $positionY = ord($rowLetter) - 64;
             for ($i = 1; $i <= $seatsPerRow; $i++) {
                 Seat::create([
                     'room_id' => $room->id,
-                    'name' => $rowLetter . $i,
-                    'seat_type_id' => $seatTypeId,
+                    'seat_type_id' => $seatType->id,
                     'row' => $rowLetter,
                     'position_x' => $i,
-                    'position_y' => ord($rowLetter) - 64,
+                    'position_y' => $positionY,
+                    'name' => $rowLetter . $i,
                 ]);
             }
         }
@@ -92,19 +93,23 @@ class SeatController extends Controller
             'room_id' => 'required|exists:rooms,id',
             'name' => 'required|string|max:10',
             'seat_type_id' => 'required|exists:seat_types,id',
-            'row' => 'nullable|string|max:2',
         ]);
 
-        $rowLetter = $request->input('row') ?? substr($request->input('name'), 0, 1);
-        $seatNumber = intval(substr($request->input('name'), 1));
+        $seatType = SeatType::findOrFail($request->seat_type_id);
+
+        $name = $request->input('name');
+        $rowLetter = substr($name, 0, 1);
+        $seatNumber = intval(substr($name, 1));
+        $positionY = ord($rowLetter) - 64;
 
         $seat->update([
             'room_id' => $request->input('room_id'),
-            'name' => $request->input('name'),
-            'seat_type_id' => $request->input('seat_type_id'),
+            'seat_type_id' => $seatType->id,
             'row' => $rowLetter,
             'position_x' => $seatNumber,
-            'position_y' => ord($rowLetter) - 64,
+            'position_y' => $positionY,
+            'name' => $name,
+            
         ]);
 
         return redirect()->route('admin.seats.index')->with('success', 'Cập nhật ghế thành công!');

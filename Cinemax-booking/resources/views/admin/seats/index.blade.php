@@ -1,139 +1,166 @@
 @extends('admin.home')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0 fw-bold text-primary">Danh sách ghế</h4>
-        <a href="{{ route('admin.seats.create') }}" class="btn btn-success shadow-sm">Tạo nhiều ghế</a>
-    </div>
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0 fw-bold text-primary"> Danh sách ghế</h4>
+            <a href="{{ route('admin.seats.create') }}" class="btn btn-success shadow-sm"> Tạo nhiều ghế</a>
         </div>
-    @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+        {{-- Thông báo --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        @endif
 
-    {{-- Bộ lọc --}}
-    <div class="accordion shadow-sm mb-4" id="accordionFilter">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingFilter">
-                <button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseFilter">
-                    Bộ lọc & Xoá hàng ghế
-                </button>
-            </h2>
-            <div id="collapseFilter" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <div class="row">
-                        <div class="col-md-6 border-end pe-3">
-                            <form method="GET" action="{{ route('admin.seats.index') }}">
-                                <div class="mb-3">
-                                    <label class="form-label">Loại ghế</label>
-                                    <select name="seat_type_id" class="form-select">
-                                        <option value="">-- Tất cả --</option>
-                                        @foreach ($seatTypes as $type)
-                                            <option value="{{ $type->id }}"
-                                                {{ request('seat_type_id') == $type->id ? 'selected' : '' }}>
-                                                {{ $type->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        @endif
 
-                                <div class="mb-3">
-                                    <label class="form-label">Phòng chiếu</label>
-                                    <select name="room_id" class="form-select">
-                                        <option value="">-- Tất cả --</option>
-                                        @foreach ($rooms as $room)
-                                            <option value="{{ $room->id }}"
-                                                {{ request('room_id') == $room->id ? 'selected' : '' }}>
-                                                {{ $room->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+        {{-- Bộ lọc --}}
+        <div class="accordion shadow-sm mb-4" id="accordionFilter">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFilter">
+                    <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
+                        Bộ lọc & Xoá hàng ghế
+                    </button>
+                </h2>
+                <div id="collapseFilter" class="accordion-collapse collapse " aria-labelledby="headingFilter"
+                    data-bs-parent="#accordionFilter">
+                    <div class="accordion-body">
 
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary">Lọc</button>
-                                    <a href="{{ route('admin.seats.index') }}" class="btn btn-secondary">Xoá lọc</a>
-                                </div>
-                            </form>
+                        <div class="row">
+                            {{-- Bộ lọc --}}
+                            <div class="col-md-6 border-end pe-3">
+                                <form method="GET" action="{{ route('admin.seats.index') }}">
+                                    <div class="mb-3">
+                                        <label for="seat_type_id" class="form-label">Loại ghế</label>
+                                        <select name="seat_type_id" id="seat_type_id" class="form-select">
+                                            <option value="">-- Tất cả --</option>
+                                            @foreach ($seatTypes as $type)
+                                                <option value="{{ $type->id }}"
+                                                    {{ request('seat_type_id') == $type->id ? 'selected' : '' }}>
+                                                    {{ $type->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="room_id" class="form-label">Phòng chiếu</label>
+                                        <select name="room_id" id="room_id" class="form-select">
+                                            <option value="">-- Tất cả --</option>
+                                            @foreach ($rooms as $room)
+                                                <option value="{{ $room->id }}"
+                                                    {{ request('room_id') == $room->id ? 'selected' : '' }}>
+                                                    {{ $room->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary">Lọc</button>
+                                        <a href="{{ route('admin.seats.index') }}" class="btn btn-secondary">Xoá lọc</a>
+                                    </div>
+                                </form>
+                            </div>
+
+                            {{-- Xoá hàng ghế --}}
+                            <div class="col-md-6 ps-3">
+                                <form method="POST" action="{{ route('admin.seats.deleteRow') }}">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="room_id_delete" class="form-label">Phòng chiếu</label>
+                                        <select name="room_id" id="room_id_delete" class="form-select" required>
+                                            <option value="">-- Chọn phòng --</option>
+                                            @foreach ($rooms as $room)
+                                                <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="row" class="form-label">Tên hàng (A, B,...)</label>
+                                        <input type="text" name="row" class="form-control" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-danger"> Xoá hàng ghế</button>
+                                </form>
+                            </div>
                         </div>
 
-                        {{-- Xoá hàng --}}
-                        <div class="col-md-6 ps-3">
-                            <form method="POST" action="{{ route('admin.seats.deleteRow') }}">
-                                @csrf
-                                <div class="mb-3">
-                                    <label class="form-label">Phòng chiếu</label>
-                                    <select name="room_id" class="form-select" required>
-                                        <option value="">-- Chọn phòng --</option>
-                                        @foreach ($rooms as $room)
-                                            <option value="{{ $room->id }}">{{ $room->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Tên hàng (A, B,...)</label>
-                                    <input type="text" name="row" class="form-control" required>
-                                </div>
-                                <button type="submit" class="btn btn-danger">Xoá hàng ghế</button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Danh sách --}}
-    <div class="table-responsive">
-        <table class="table table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>Phòng</th>
-                    <th>Hàng</th>
-                    <th>Cột</th>
-                    <th>Loại ghế</th>
-                    <th>Trạng thái</th>
-                    <th width="140">Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($seats as $seat)
-                    <tr>
-                        <td>{{ $seat->id }}</td>
-                        <td>{{ $seat->room->name }}</td>
-                        <td>{{ $seat->row }}</td>
-                        <td>{{ $seat->column }}</td>
-                        <td>{{ $seat->seatType->name ?? '-' }}</td>
-                        <td>
-                            @if ($seat->is_available)
-                                <span class="badge bg-success">Còn trống</span>
-                            @else
-                                <span class="badge bg-danger">Đã đặt</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{ route('admin.seats.edit', $seat->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                            <form action="{{ route('admin.seats.destroy', $seat->id) }}" method="POST" class="d-inline"
-                                onsubmit="return confirm('Bạn chắc chắn muốn xoá ghế này?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Xoá</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
 
-        {{ $seats->links() }}
+        {{-- Bảng danh sách --}}
+        <div class="card shadow-sm">
+            <div class="card-header bg-light fw-semibold"> Danh sách ghế</div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center mb-0">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Hàng</th>
+                                <th>Tên ghế</th>
+                                <th>Loại</th>
+                                <th>Phòng</th>
+                                <th>Giá vé</th>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($seats as $seat)
+                                <tr>
+                                    <td>{{ $seat->id }}</td>
+                                    <td>{{ $seat->row }}</td>
+                                    <td>{{ $seat->name }}</td>
+                                    <td>{{ $seat->type->name ?? 'N/A' }}</td>
+                                    <td>{{ $seat->room->name ?? 'Không xác định' }}</td>
+                                    <td>{{ number_format($seat->seatType->price ) }}đ</td>
+                                    <td>{{ $seat->position_x }}</td>
+                                    <td>{{ $seat->position_y }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.seats.edit', $seat->id) }}"
+                                            class="btn btn-sm btn-outline-warning me-1">
+                                            Sửa
+                                        </a>
+                                        <form action="{{ route('admin.seats.destroy', $seat->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button onclick="return confirm('Xóa ghế này?')"
+                                                class="btn btn-sm btn-outline-danger">
+                                                Xóa
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-muted">Không có ghế nào.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{-- Phân trang --}}
+            <div class="card-footer text-center">
+                {{ $seats->links() }}
+            </div>
+        </div>
     </div>
 @endsection

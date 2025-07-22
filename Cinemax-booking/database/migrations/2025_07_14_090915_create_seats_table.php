@@ -10,17 +10,17 @@ return new class extends Migration {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
-            $table->foreignId('seat_type_id')->nullable()->constrained()->onDelete('set null'); // GỘP LUÔN VÀO ĐÂY
-            $table->string('seat_number');
+            $table->foreignId('seat_type_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('row');
+            $table->unsignedInteger('position_x');
+            $table->unsignedInteger('position_y'); // Bổ sung nếu dùng để xác định hàng (A=1, B=2,...)
+            $table->string('name'); // A1, B2,...
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('seats', function (Blueprint $table) {
-            $table->dropForeign(['seat_type_id']);
-            $table->dropColumn('seat_type_id');
-        });
+        Schema::dropIfExists('seats');
     }
 };

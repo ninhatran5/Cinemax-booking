@@ -3,10 +3,17 @@
     <h2>Quản lý loại ghế</h2>
 
     @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
     @endif
+
     @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
     @endif
 
     <a href="{{ route('admin.seat-types.create') }}" class="btn btn-primary mb-3">+ Thêm loại ghế</a>
@@ -29,8 +36,8 @@
                     <td>
                         @if (!$type->deleted_at)
                             <a href="{{ route('admin.seat-types.edit', $type->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                            <form method="POST" action="{{ route('admin.seat-types.destroy', $type->id) }}" style="display:inline;"
-                                onsubmit="return confirm('Bạn chắc chắn muốn xoá mềm?')">
+                            <form method="POST" action="{{ route('admin.seat-types.destroy', $type->id) }}"
+                                style="display:inline;" onsubmit="return confirm('Bạn chắc chắn muốn xoá mềm?')">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Xoá mềm</button>
                             </form>
