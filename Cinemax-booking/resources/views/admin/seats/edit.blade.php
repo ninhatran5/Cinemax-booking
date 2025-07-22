@@ -4,7 +4,7 @@
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-warning text-dark fw-semibold">
-                 Cập nhật ghế: {{ $seat->name }}
+                Cập nhật ghế: {{ $seat->name }}
             </div>
 
             <div class="card-body">
@@ -42,19 +42,16 @@
 
                     {{-- Loại ghế --}}
                     <div class="mb-3">
-                        <label for="seat_type" class="form-label"> Loại ghế</label>
-                        <select name="seat_type" id="seat_type" class="form-select @error('seat_type') is-invalid @enderror"
-                            required>
-                            <option value="normal" {{ old('seat_type', $seat->seat_type) == 'normal' ? 'selected' : '' }}>
-                                Ghế thường</option>
-                            <option value="vip" {{ old('seat_type', $seat->seat_type) == 'vip' ? 'selected' : '' }}>Ghế
-                                VIP</option>
-                            <option value="double" {{ old('seat_type', $seat->seat_type) == 'double' ? 'selected' : '' }}>
-                                Ghế đôi</option>
+                        <label class="form-label">Loại ghế</label>
+                        <select name="seat_type_id" class="form-select" required>
+                            <option value="">-- Chọn loại ghế --</option>
+                            @foreach ($seatTypes as $type)
+                                <option value="{{ $type->id }}"
+                                    {{ $seat->seat_type_id == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('seat_type')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     {{-- Nút --}}

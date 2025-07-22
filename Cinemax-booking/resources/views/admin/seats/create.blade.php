@@ -4,7 +4,7 @@
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white fw-bold">
-                 Thêm nhiều ghế vào phòng chiếu
+                Thêm nhiều ghế vào phòng chiếu
             </div>
 
             <div class="card-body">
@@ -74,16 +74,16 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label"> Loại ghế</label>
-                        <select name="seat_type" class="form-select @error('seat_type') is-invalid @enderror" required>
-                            <option value="">-- Chọn loại --</option>
-                            <option value="normal" {{ old('seat_type') == 'normal' ? 'selected' : '' }}>Ghế thường</option>
-                            <option value="vip" {{ old('seat_type') == 'vip' ? 'selected' : '' }}>Ghế VIP</option>
-                            <option value="double" {{ old('seat_type') == 'double' ? 'selected' : '' }}>Ghế đôi</option>
+                        <label class="form-label">Loại ghế</label>
+                        <select name="seat_type_id" class="form-select" required>
+                            <option value="">-- Chọn loại ghế --</option>
+                            @foreach ($seatTypes as $type)
+                                <option value="{{ $type->id }}"
+                                    {{ old('seat_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('seat_type')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     {{-- Preview --}}
@@ -110,7 +110,7 @@
 
             function updatePreview() {
                 const rowLetters = rowsInput.value.toUpperCase().split(',').map(r => r.trim()).filter(r => r !==
-                '');
+                    '');
                 const seatCount = parseInt(seatsInput.value);
                 preview.innerHTML = '';
 

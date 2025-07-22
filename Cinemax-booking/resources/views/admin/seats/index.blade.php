@@ -31,7 +31,7 @@
                         Bộ lọc & Xoá hàng ghế
                     </button>
                 </h2>
-                <div id="collapseFilter" class="accordion-collapse collapse show" aria-labelledby="headingFilter"
+                <div id="collapseFilter" class="accordion-collapse collapse " aria-labelledby="headingFilter"
                     data-bs-parent="#accordionFilter">
                     <div class="accordion-body">
 
@@ -40,15 +40,14 @@
                             <div class="col-md-6 border-end pe-3">
                                 <form method="GET" action="{{ route('admin.seats.index') }}">
                                     <div class="mb-3">
-                                        <label for="seat_type" class="form-label">Loại ghế</label>
-                                        <select name="seat_type" id="seat_type" class="form-select">
+                                        <label for="seat_type_id" class="form-label">Loại ghế</label>
+                                        <select name="seat_type_id" id="seat_type_id" class="form-select">
                                             <option value="">-- Tất cả --</option>
-                                            <option value="normal" {{ request('seat_type') == 'normal' ? 'selected' : '' }}>
-                                                Ghế Thường</option>
-                                            <option value="vip" {{ request('seat_type') == 'vip' ? 'selected' : '' }}>Ghế
-                                                VIP</option>
-                                            <option value="double" {{ request('seat_type') == 'double' ? 'selected' : '' }}>
-                                                Ghế Đôi</option>
+                                            @foreach ($seatTypes as $type)
+                                                <option value="{{ $type->id }}"
+                                                    {{ request('seat_type_id') == $type->id ? 'selected' : '' }}>
+                                                    {{ $type->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -127,26 +126,9 @@
                                     <td>{{ $seat->id }}</td>
                                     <td>{{ $seat->row }}</td>
                                     <td>{{ $seat->name }}</td>
-                                    <td>
-                                        @switch($seat->seat_type)
-                                            @case('normal')
-                                                <span class="badge bg-primary">Thường</span>
-                                            @break
-
-                                            @case('vip')
-                                                <span class="badge bg-warning text-dark">VIP</span>
-                                            @break
-
-                                            @case('double')
-                                                <span class="badge bg-danger">Đôi</span>
-                                            @break
-
-                                            @default
-                                                <span class="badge bg-secondary">Không rõ</span>
-                                        @endswitch
-                                    </td>
+                                    <td>{{ $seat->type->name ?? 'N/A' }}</td>
                                     <td>{{ $seat->room->name ?? 'Không xác định' }}</td>
-                                    <td>{{ number_format($seat->price) }}đ</td>
+                                    <td>{{ number_format($seat->seatType->price ) }}đ</td>
                                     <td>{{ $seat->position_x }}</td>
                                     <td>{{ $seat->position_y }}</td>
                                     <td>
@@ -165,20 +147,20 @@
                                         </form>
                                     </td>
                                 </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-muted">Không có ghế nào.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {{-- Phân trang --}}
-                <div class="card-footer text-center">
-                    {{ $seats->links() }}
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-muted">Không có ghế nào.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            {{-- Phân trang --}}
+            <div class="card-footer text-center">
+                {{ $seats->links() }}
+            </div>
         </div>
-    @endsection
+    </div>
+@endsection

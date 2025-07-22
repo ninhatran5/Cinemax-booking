@@ -5,16 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\SeatType;
 use Illuminate\Http\Request;
 
 class SeatController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Seat::with('room');
+        $query = Seat::with(['room', 'type']);
 
-        if ($request->filled('seat_type')) {
-            $query->where('seat_type', $request->seat_type);
+        if ($request->filled('seat_type_id')) {
+            $query->where('seat_type_id', $request->seat_type_id);
         }
 
         if ($request->filled('room_id')) {
@@ -26,32 +27,32 @@ class SeatController extends Controller
             ->appends($request->query());
 
         $rooms = Room::all();
+        $seatTypes = SeatType::all();
 
-        return view('admin.seats.index', compact('seats', 'rooms'));
+        return view('admin.seats.index', compact('seats', 'rooms', 'seatTypes'));
     }
 
     public function create()
     {
         $rooms = Room::all();
-        return view('admin.seats.create', compact('rooms'));
+        $seatTypes = SeatType::all();
+        return view('admin.seats.create', compact('rooms', 'seatTypes'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
-            'rows' => 'required|string', // VD: A,B,C
+            'rows' => 'required|string',
             'seats_per_row' => 'required|integer|min:1',
-            'seat_type' => 'required|in:normal,vip,double',
+            'seat_type_id' => 'required|exists:seat_types,id',
         ]);
 
         $room = Room::findOrFail($request->room_id);
-        $seatType = $request->seat_type;
+        $seatType = SeatType::findOrFail($request->seat_type_id);
         $seatsPerRow = intval($request->seats_per_row);
-
         $rowLetters = array_map('trim', explode(',', strtoupper($request->rows)));
         $totalToCreate = count($rowLetters) * $seatsPerRow;
-
         $currentCount = $room->seats()->count();
 
         if (($currentCount + $totalToCreate) > $room->capacity) {
@@ -63,14 +64,15 @@ class SeatController extends Controller
         }
 
         foreach ($rowLetters as $rowLetter) {
+            $positionY = ord($rowLetter) - 64;
             for ($i = 1; $i <= $seatsPerRow; $i++) {
                 Seat::create([
                     'room_id' => $room->id,
-                    'name' => $rowLetter . $i,
-                    'seat_type' => $seatType,
+                    'seat_type_id' => $seatType->id,
                     'row' => $rowLetter,
                     'position_x' => $i,
-                    'position_y' => ord($rowLetter) - 64, // A=1, B=2, ...
+                    'position_y' => $positionY,
+                    'name' => $rowLetter . $i,
                 ]);
             }
         }
@@ -81,7 +83,8 @@ class SeatController extends Controller
     public function edit(Seat $seat)
     {
         $rooms = Room::all();
-        return view('admin.seats.edit', compact('seat', 'rooms'));
+        $seatTypes = SeatType::all();
+        return view('admin.seats.edit', compact('seat', 'rooms', 'seatTypes'));
     }
 
     public function update(Request $request, Seat $seat)
@@ -89,20 +92,24 @@ class SeatController extends Controller
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'name' => 'required|string|max:10',
-            'seat_type' => 'required|in:normal,vip,double',
-            'row' => 'nullable|string|max:2',
+            'seat_type_id' => 'required|exists:seat_types,id',
         ]);
 
-        $rowLetter = $request->input('row') ?? substr($request->input('name'), 0, 1);
-        $seatNumber = intval(substr($request->input('name'), 1));
+        $seatType = SeatType::findOrFail($request->seat_type_id);
+
+        $name = $request->input('name');
+        $rowLetter = substr($name, 0, 1);
+        $seatNumber = intval(substr($name, 1));
+        $positionY = ord($rowLetter) - 64;
 
         $seat->update([
             'room_id' => $request->input('room_id'),
-            'name' => $request->input('name'),
-            'seat_type' => $request->input('seat_type'),
+            'seat_type_id' => $seatType->id,
             'row' => $rowLetter,
             'position_x' => $seatNumber,
-            'position_y' => ord($rowLetter) - 64,
+            'position_y' => $positionY,
+            'name' => $name,
+            
         ]);
 
         return redirect()->route('admin.seats.index')->with('success', 'Cập nhật ghế thành công!');

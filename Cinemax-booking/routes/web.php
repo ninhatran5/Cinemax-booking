@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Client\ClientBookingController;
 use App\Http\Controllers\Client\ClientMovieController;
 
@@ -89,6 +90,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // QUẢN LÝ ĐẶT VÉ
         Route::resource('bookings', BookingController::class)->only(['index', 'show', 'destroy']);
+        // quản lý loại ghế
+        Route::resource('seat-types', SeatTypeController::class);
+        Route::post('seat-types/{id}/restore', [SeatTypeController::class, 'restore'])->name('seat-types.restore');
+        Route::delete('seat-types/{id}/force', [SeatTypeController::class, 'forceDelete'])->name('seat-types.force-delete');
     });
 });
 
@@ -115,5 +120,3 @@ Route::post('/register', [ClientAuthController::class, 'register'])->name('clien
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
 Route::get('/chon-ghe-modal/{showtime}', [ClientBookingController::class, 'loadSeatModal'])->name('client.booking.modal');
 Route::post('/dat-ve/{showtime}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
-
-
