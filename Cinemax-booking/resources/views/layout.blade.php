@@ -96,14 +96,19 @@
 
             function updateSeatInfo() {
                 const selected = Array.from(document.querySelectorAll('input[name="seats[]"]:checked'));
-                const seatNames = selected.map(cb => {
-                    const label = document.querySelector(`label[for="${cb.id}"]`);
-                    return label ? label.textContent.trim() : '';
-                });
 
-                const seatCount = selected.length;
-                const pricePerSeat = 50000;
-                const total = seatCount * pricePerSeat;
+                const seatNames = [];
+                let total = 0;
+
+                selected.forEach(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`);
+                    const price = parseInt(cb.getAttribute('data-price')) || 0;
+                    total += price;
+
+                    if (label) {
+                        seatNames.push(label.textContent.trim());
+                    }
+                });
 
                 document.getElementById('selected-seats').innerText = seatNames.join(', ') || '---';
                 document.getElementById('total-price').innerText = total.toLocaleString('vi-VN') + 'đ';
