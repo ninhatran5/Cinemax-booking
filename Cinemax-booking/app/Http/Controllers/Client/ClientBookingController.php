@@ -65,5 +65,29 @@ class ClientBookingController extends Controller
         }
 
         $booking->update(['total_price' => $total]);
+
+        return redirect()->route('client.booking.show', $booking->id)
+            ->with('success', 'Đặt vé thành công!');
+    }
+
+    public function showBooking(Booking $booking)
+    {
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'Không có quyền truy cập.');
+        }
+
+        $booking->load(['showtime.movie', 'showtime.room', 'seats.type']);
+
+        return view('client.showbooking', compact('booking'));
+    }
+
+    public function history()
+    {
+        $bookings = Booking::with(['showtime.movie', 'showtime.room', 'seats.type'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('booking_time')
+            ->get();
+
+        return view('client..history', compact('bookings'));
     }
 }

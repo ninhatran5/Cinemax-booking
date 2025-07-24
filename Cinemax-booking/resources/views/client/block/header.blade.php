@@ -151,7 +151,8 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
-                                    <li><a class="dropdown-item" href="#">Lịch sử đặt vé</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('client.booking.history') }}">Lịch sử đặt
+                                            vé</a></li>
                                     <li>
                                         <form action="{{ route('client.logout') }}" method="POST" class="m-0">
                                             @csrf

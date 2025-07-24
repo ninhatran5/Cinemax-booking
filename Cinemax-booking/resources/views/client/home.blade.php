@@ -3,40 +3,60 @@
 @section('content')
     @include('client.block.slide')
     <div class="container">
+        <br>
         <h2>Phim đang chiếu</h2>
         <div class="d-flex mb-3">
             @foreach ($dates as $date)
-                <a href="{{ route('client.home', ['date' => $date]) }}">
-                    <button class="btn btn me-2 {{ $selectedDate == $date ? 'btn-primary' : '' }}">
-                        {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
-                    </button>
+                <a href="{{ route('client.home', ['date' => $date]) }}"
+                    class="btn me-2 {{ $selectedDate == $date ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                 </a>
             @endforeach
         </div>
 
+        @php
+            use Carbon\Carbon;
+            $now = Carbon::now();
+        @endphp
+
         <div class="row">
             @foreach ($movies as $movie)
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $movie->title }}</h5>
-                            <div>
-                                <img src="{{ asset('storage/' . $movie->image) }}" width="50" alt="{{ $movie->title }}">
-                                <span class="ms-2">{{ $movie->duration }} phút</span>
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex align-items-start border rounded shadow-sm p-3 h-100" style="background-color: #fff;">
+                        <!-- Poster -->
+                        <img src="{{ asset('storage/' . $movie->image) }}" alt="{{ $movie->title }}" class="img-fluid me-3"
+                            style="width: 120px; height: auto; border-radius: 10px; object-fit: cover;">
+
+                        <!-- Thông tin -->
+                        <div>
+                            <h5 class="fw-bold text-uppercase">{{ $movie->title }}</h5>
+
+                            <div class="text-muted mb-2 small">
+                                <i class="bi bi-clock-fill text-primary"></i> |
+                                {{ $movie->duration }} phút
                             </div>
-                            <div class="mt-2">
-                                @foreach ($movie->showtimes as $showtime)
-                                    <button class="btn btn-success btn-sm mb-1"
-                                        onclick="openSeatModal({{ $showtime->id }})">
-                                        {{ $showtime->start_time }}
-                                    </button>
-                                @endforeach
-                            </div>
+
+                            <!-- Suất chiếu -->
+                            @foreach ($movie->showtimes as $showtime)
+                                @php
+                                    $showtimeTime = Carbon::parse($showtime->start_time);
+                                    $isPast = $showtimeTime <= $now;
+                                @endphp
+
+                                <button class="btn btn-sm mb-2 me-2"
+                                    style="background-color: {{ $isPast ? '#ffc107' : '#28a745' }};
+                                   color: {{ $isPast ? '#000' : '#fff' }};"
+                                    {{ $isPast ? 'disabled' : '' }}
+                                    onclick="{{ $isPast ? '' : "openSeatModal($showtime->id)" }}">
+                                    {{ $showtimeTime->format('H:i') }}
+                                </button>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+
     </div>
 
     <!-- Modal -->
