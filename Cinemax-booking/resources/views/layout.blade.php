@@ -115,7 +115,33 @@
             }
         }
     </script>
+    @section('scripts')
+        <script>
+            // ===== Ghi lại vị trí scroll trước khi reload hoặc chuyển trang
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('scrollPosition', window.scrollY);
+            });
 
+            // ===== Khôi phục vị trí scroll khi load lại trang
+            window.addEventListener('load', function() {
+                const scrollPosition = localStorage.getItem('scrollPosition');
+                if (scrollPosition !== null) {
+                    window.scrollTo(0, parseInt(scrollPosition));
+                }
+            });
+
+            // ===== Load modal ghế
+            function openSeatModal(showtimeId) {
+                fetch(`/showtime/${showtimeId}/seats`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('seatModalContent').innerHTML = html;
+                        const modal = new bootstrap.Modal(document.getElementById('seatModal'));
+                        modal.show();
+                    });
+            }
+        </script>
+    @endsection
 
 </body>
 

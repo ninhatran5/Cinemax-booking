@@ -1,6 +1,6 @@
 <style>
     .modal-dialog {
-        max-width: 1400px;
+        max-width: 1500px;
     }
 
     .btn-seat-available {
@@ -19,7 +19,6 @@
         margin-bottom: 6px;
         align-items: center;
         overflow-x: auto;
-        /* Ngăn xuống dòng nếu không đủ chiều rộng */
         white-space: nowrap;
     }
 
@@ -112,7 +111,11 @@
                     <strong>Tổng tiền:</strong> <span id="total-price">0đ</span>
                 </div>
 
-                <button type="submit" class="btn btn-warning w-100">Xác nhận đặt vé</button>
+                @auth
+                    <button type="submit" class="btn btn-warning w-100">Xác nhận đặt vé</button>
+                @else
+                    <a href="{{ route('client.login') }}" class="btn btn-danger w-100">Đăng nhập để đặt vé</a>
+                @endauth
             </div>
         </div>
     </form>

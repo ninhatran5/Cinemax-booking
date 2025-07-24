@@ -18,6 +18,7 @@ use App\Http\Controllers\Client\ClientMovieController;
 /*
 ADMIN ROUTES
 */
+
 Route::prefix('admin')->name('admin.')->group(function () {
     // Trang login
     Route::get('/', function () {
@@ -114,4 +115,8 @@ Route::post('/register', [ClientAuthController::class, 'register'])->name('clien
 // Đăng xuất
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
 Route::get('/chon-ghe-modal/{id}', [ClientBookingController::class, 'loadSeatModal'])->name('client.booking.modal');
-Route::post('/dat-ve/{id}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/dat-ve/{id}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
+    Route::get('/ve/{booking}', [ClientBookingController::class, 'showBooking'])->name('client.booking.show');
+    Route::get('/lich-su-dat-ve', [ClientBookingController::class, 'history'])->name('client.booking.history');
+});
