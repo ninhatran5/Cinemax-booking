@@ -16,11 +16,8 @@ use App\Http\Controllers\Client\ClientBookingController;
 use App\Http\Controllers\Client\ClientMovieController;
 
 /*
-|--------------------------------------------------------------------------
-| ADMIN ROUTES
-|--------------------------------------------------------------------------
+ADMIN ROUTES
 */
-
 Route::prefix('admin')->name('admin.')->group(function () {
     // Trang login
     Route::get('/', function () {
@@ -99,9 +96,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 /*
-|--------------------------------------------------------------------------
-| CLIENT ROUTES
-|--------------------------------------------------------------------------
+CLIENT ROUTES
 */
 
 // Trang chủ client
@@ -118,5 +113,5 @@ Route::post('/register', [ClientAuthController::class, 'register'])->name('clien
 
 // Đăng xuất
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
-Route::get('/chon-ghe-modal/{showtime}', [ClientBookingController::class, 'loadSeatModal'])->name('client.booking.modal');
-Route::post('/dat-ve/{showtime}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
+Route::get('/chon-ghe-modal/{id}', [ClientBookingController::class, 'loadSeatModal'])->name('client.booking.modal');
+Route::post('/dat-ve/{id}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');

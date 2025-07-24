@@ -13,6 +13,7 @@
                 </a>
             @endforeach
         </div>
+
         <div class="row">
             @foreach ($movies as $movie)
                 <div class="col-md-3 mb-4">
@@ -37,12 +38,27 @@
             @endforeach
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="seatModal" tabindex="-1" aria-labelledby="seatModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content" id="seatModalContent">
-                <!-- Nội dung ghế sẽ được load vào đây -->
+                <!-- Nội dung ghế sẽ load bằng AJAX -->
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function openSeatModal(showtimeId) {
+            fetch(`/showtime/${showtimeId}/seats`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('seatModalContent').innerHTML = html;
+                    const modal = new bootstrap.Modal(document.getElementById('seatModal'));
+                    modal.show();
+                });
+        }
+    </script>
 @endsection
