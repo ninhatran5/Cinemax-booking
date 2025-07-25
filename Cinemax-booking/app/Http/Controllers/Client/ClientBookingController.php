@@ -33,16 +33,25 @@ class ClientBookingController extends Controller
 
         $selectedSeatIds = $request->seats;
 
-        $bookedSeatIds = BookingSeat::whereHas('booking', function ($q) use ($showtimeId) {
-            $q->where('showtime_id', $showtimeId);
-        })->pluck('seat_id')->toArray();
+        // BƯỚC 1: kiểm tra các ghế đã được đặt chưa
+        $alreadyBookedSeatIds = BookingSeat::whereIn('seat_id', $selectedSeatIds)
+            ->whereHas('booking', function ($q) use ($showtimeId) {
+                $q->where('showtime_id', $showtimeId);
+            })
+            ->pluck('seat_id')
+            ->toArray();
 
-        $conflictedSeats = array_intersect($selectedSeatIds, $bookedSeatIds);
+        if (count($alreadyBookedSeatIds) > 0) {
+            $seatNames = Seat::whereIn('id', $alreadyBookedSeatIds)
+                ->pluck('name')
+                ->implode(', ');
 
-        if (count($conflictedSeats) > 0) {
-            return redirect()->back()->withErrors(['seats' => 'Một số ghế đã có người đặt. Vui lòng chọn lại.']);
+            return redirect()->back()->withErrors([
+                'seats' => 'Các ghế sau đã có người đặt: ' . $seatNames . '. Vui lòng chọn lại.'
+            ])->withInput();
         }
 
+        // BƯỚC 2: tạo booking
         $booking = Booking::create([
             'user_id' => Auth::id(),
             'showtime_id' => $showtimeId,

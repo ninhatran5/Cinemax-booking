@@ -13,7 +13,12 @@
                 </a>
             @endforeach
         </div>
-
+        @if ($errors->has('seats'))
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                {{ $errors->first('seats') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        @endif
         @php
             use Carbon\Carbon;
             $now = Carbon::now();
@@ -22,7 +27,8 @@
         <div class="row">
             @foreach ($movies as $movie)
                 <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-start border rounded shadow-sm p-3 h-100" style="background-color: #fff;">
+                    <div class="d-flex align-items-start border rounded shadow-sm p-3 h-100"
+                        style="background-color: #fff;">
                         <!-- Poster -->
                         <img src="{{ asset('storage/' . $movie->image) }}" alt="{{ $movie->title }}" class="img-fluid me-3"
                             style="width: 120px; height: auto; border-radius: 10px; object-fit: cover;">

@@ -17,7 +17,11 @@
             use Carbon\Carbon;
             $now = Carbon::now();
         @endphp
-
+        @if ($errors->has('seats'))
+            <div class="alert alert-danger">
+                {{ $errors->first('seats') }}
+            </div>
+        @endif
         <div class="row">
             @foreach ($movies as $movie)
                 <div class="col-md-6 mb-4">
