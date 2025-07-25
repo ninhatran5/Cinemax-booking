@@ -1,22 +1,38 @@
 @extends('layout')
 
 @section('content')
+    <style>
+        .date-tab {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 10px;
+            color: #6c757d;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+
+        .date-tab:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .date-tab.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+    </style>
     <div class="container">
         <br>
         <h2>Phim đang chiếu</h2>
         <div class="d-flex mb-3">
             @foreach ($dates as $date)
                 <a href="{{ route('client.movie', ['date' => $date]) }}"
-                    class="btn me-2 {{ $selectedDate == $date ? 'btn-primary' : 'btn-outline-primary' }}">
+                    class="date-tab {{ $selectedDate == $date ? 'active' : '' }}">
                     {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                 </a>
             @endforeach
         </div>
-
-        @php
-            use Carbon\Carbon;
-            $now = Carbon::now();
-        @endphp
         @if ($errors->has('seats'))
             <div class="alert alert-danger">
                 {{ $errors->first('seats') }}
@@ -38,19 +54,26 @@
                                 <i class="bi bi-clock-fill text-primary"></i> |
                                 {{ $movie->duration }} phút
                             </div>
+                            {{-- Suất chiếu --}}
+                            @php
+                                $now = \Carbon\Carbon::now();
+                            @endphp
 
-                            <!-- Suất chiếu -->
                             @foreach ($movie->showtimes as $showtime)
                                 @php
-                                    $showtimeTime = Carbon::parse($showtime->start_time);
-                                    $isPast = $showtimeTime <= $now;
+                                    $showtimeTime = \Carbon\Carbon::parse(
+                                        "{$showtime->show_date} {$showtime->start_time}",
+                                    );
+                                    $isPast = $showtimeTime->lt($now);
                                 @endphp
 
                                 <button class="btn btn-sm mb-2 me-2"
                                     style="background-color: {{ $isPast ? '#ffc107' : '#28a745' }};
-                                   color: {{ $isPast ? '#000' : '#fff' }};"
-                                    {{ $isPast ? 'disabled' : '' }}
-                                    onclick="{{ $isPast ? '' : "openSeatModal($showtime->id)" }}">
+               color: {{ $isPast ? '#000' : '#fff' }};"
+                                    @if ($isPast) disabled
+            title="Suất chiếu đã kết thúc lúc {{ $showtimeTime->format('H:i d/m') }}"
+        @else
+            onclick="openSeatModal({{ $showtime->id }})" @endif>
                                     {{ $showtimeTime->format('H:i') }}
                                 </button>
                             @endforeach

@@ -1,14 +1,35 @@
 @extends('layout')
 
 @section('content')
+    <style>
+        .date-tab {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 10px;
+            color: #6c757d;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+
+        .date-tab:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .date-tab.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+    </style>
     @include('client.block.slide')
     <div class="container">
         <br>
         <h2>Phim đang chiếu</h2>
         <div class="d-flex mb-3">
             @foreach ($dates as $date)
-                <a href="{{ route('client.home', ['date' => $date]) }}"
-                    class="btn me-2 {{ $selectedDate == $date ? 'btn-primary' : 'btn-outline-primary' }}">
+                <a href="{{ route('client.movie', ['date' => $date]) }}"
+                    class="date-tab {{ $selectedDate == $date ? 'active' : '' }}">
                     {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                 </a>
             @endforeach
