@@ -26,8 +26,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     // Xử lý login
-    Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
-
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
     // Nhóm route cần kiểm tra IsAdmin middleware
     Route::middleware([IsAdmin::class])->group(function () {
         Route::get('/home', function () {
