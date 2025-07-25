@@ -59,7 +59,7 @@
         @csrf
         <div class="row">
             <!-- Bên trái: ghế -->
-            <div class="col-md-7">
+            <div class="col-md-10">
                 @php
                     $seatsByRow = $showtime->room->seats->groupBy('row');
                 @endphp
@@ -86,7 +86,7 @@
             </div>
 
             <!-- Bên phải: thông tin -->
-            <div class="col-md-5 info-section">
+            <div class="col-md-2 info-section">
                 <p><strong>Phim:</strong> {{ $showtime->movie->title }}</p>
                 <p><strong>Phòng:</strong> {{ $showtime->room->name }}</p>
                 <p><strong>Suất chiếu:</strong> {{ $showtime->start_time }}</p>
