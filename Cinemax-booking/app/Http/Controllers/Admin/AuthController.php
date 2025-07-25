@@ -13,7 +13,7 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('admin.login'); // Đảm bảo file view này tồn tại
+        return view('admin.login'); 
     }
 
     /**
