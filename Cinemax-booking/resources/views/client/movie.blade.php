@@ -62,16 +62,20 @@
                             <!-- Suất chiếu -->
                             @foreach ($movie->showtimes as $showtime)
                                 @php
-                                    $showtimeTime = Carbon::parse($showtime->start_time);
-                                    $isPast = $showtimeTime <= $now;
+                                    // Parse ngày giờ chiếu từ DB
+                                    $showDateTime = Carbon::parse($showtime->show_date . ' ' . $showtime->start_time);
+
+                                    // Nếu hôm nay và giờ chiếu < hiện tại ⇒ disable
+                                    $isToday = $showDateTime->isSameDay($now);
+                                    $isExpired = $isToday && $showDateTime->lt($now);
                                 @endphp
 
                                 <button class="btn btn-sm mb-2 me-2"
-                                    style="background-color: {{ $isPast ? '#ffc107' : '#28a745' }};
-                                   color: {{ $isPast ? '#000' : '#fff' }};"
-                                    {{ $isPast ? 'disabled' : '' }}
-                                    onclick="{{ $isPast ? '' : "openSeatModal($showtime->id)" }}">
-                                    {{ $showtimeTime->format('H:i') }}
+                                    style="background-color: {{ $isExpired ? '#ffc107' : '#28a745' }};
+               color: {{ $isExpired ? '#000' : '#fff' }};"
+                                    {{ $isExpired ? 'disabled' : '' }}
+                                    onclick="{{ $isExpired ? '' : "openSeatModal($showtime->id)" }}">
+                                    {{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                 </button>
                             @endforeach
                         </div>
