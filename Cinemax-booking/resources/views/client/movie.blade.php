@@ -38,6 +38,10 @@
                 {{ $errors->first('seats') }}
             </div>
         @endif
+        @php
+            use Carbon\Carbon;
+            $now = Carbon::now();
+        @endphp
         <div class="row">
             @foreach ($movies as $movie)
                 <div class="col-md-6 mb-4">
@@ -54,26 +58,19 @@
                                 <i class="bi bi-clock-fill text-primary"></i> |
                                 {{ $movie->duration }} phút
                             </div>
-                            {{-- Suất chiếu --}}
-                            @php
-                                $now = \Carbon\Carbon::now();
-                            @endphp
 
+                            <!-- Suất chiếu -->
                             @foreach ($movie->showtimes as $showtime)
                                 @php
-                                    $showtimeTime = \Carbon\Carbon::parse(
-                                        "{$showtime->show_date} {$showtime->start_time}",
-                                    );
-                                    $isPast = $showtimeTime->lt($now);
+                                    $showtimeTime = Carbon::parse($showtime->start_time);
+                                    $isPast = $showtimeTime <= $now;
                                 @endphp
 
                                 <button class="btn btn-sm mb-2 me-2"
                                     style="background-color: {{ $isPast ? '#ffc107' : '#28a745' }};
-               color: {{ $isPast ? '#000' : '#fff' }};"
-                                    @if ($isPast) disabled
-            title="Suất chiếu đã kết thúc lúc {{ $showtimeTime->format('H:i d/m') }}"
-        @else
-            onclick="openSeatModal({{ $showtime->id }})" @endif>
+                                   color: {{ $isPast ? '#000' : '#fff' }};"
+                                    {{ $isPast ? 'disabled' : '' }}
+                                    onclick="{{ $isPast ? '' : "openSeatModal($showtime->id)" }}">
                                     {{ $showtimeTime->format('H:i') }}
                                 </button>
                             @endforeach

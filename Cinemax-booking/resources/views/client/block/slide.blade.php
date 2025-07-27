@@ -1,50 +1,61 @@
 @if ($banners->count())
     <style>
-        /* Bố cục Slide */
+        /* Khung chứa carousel - THU NHỎ và căn giữa */
+        .carousel-wrapper {
+            max-width: 900px;
+            /* ✅ Giới hạn chiều rộng (có thể thay đổi: 800px, 70%, etc.) */
+            margin: 0 auto;
+            /* ✅ Căn giữa */
+            padding: 20px 0;
+        }
+
         #myCarousel {
-            max-width: 100%;
-            overflow: hidden;
-        }
-
-        #myCarousel .carousel-item {
-            text-align: center;
-        }
-
-        #myCarousel .carousel-item img {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
+        }
+
+        .carousel-inner {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+        }
+
+        .carousel-item {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
             object-position: center;
-            border-radius: 8px;
+            background-color: #fff;
         }
 
-        @media (min-width: 768px) {
-            #myCarousel .carousel-item img {
-                height: 550px;
-            }
+        /* Căn giữa nút chuyển slide */
+        .carousel-control-prev,
+        .carousel-control-next {
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5%;
         }
 
-        /* Indicator spacing */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 30px;
+            height: 30px;
+            background-size: 100% 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
         .carousel-indicators [data-bs-target] {
             width: 10px;
             height: 10px;
             border-radius: 50%;
         }
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-size: 100% 100%;
-            width: 30px;
-            height: 30px;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5%;
-        }
     </style>
 
-    <div class="container-fluid px-0">
+    <div class="carousel-wrapper">
         <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
             <!-- Indicators -->
             <div class="carousel-indicators">
@@ -59,7 +70,7 @@
             <div class="carousel-inner">
                 @foreach ($banners as $index => $banner)
                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/' . $banner->image) }}" class="d-block mx-auto"
+                        <img src="{{ asset('storage/' . $banner->image) }}"
                             alt="{{ $banner->title ?? 'Slide ' . ($index + 1) }}">
                     </div>
                 @endforeach
