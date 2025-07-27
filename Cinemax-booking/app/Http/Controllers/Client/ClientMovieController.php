@@ -12,22 +12,26 @@ class ClientMovieController extends Controller
 {
     public function index(Request $request)
     {
-        $today = Carbon::today();
+        $today = now()->toDateString(); // Lấy ngày hôm nay theo định dạng 'Y-m-d'
 
-        // Lấy danh sách ngày có lịch chiếu, chỉ lấy các ngày từ hôm nay trở đi
+        // Lấy danh sách ngày có lịch chiếu, và lọc bỏ các ngày đã qua
         $dates = Showtime::select('show_date')
-            ->whereDate('show_date', '>=', $today)
             ->distinct()
+            ->whereDate('show_date', '>=', $today)
             ->orderBy('show_date')
             ->pluck('show_date');
 
-        // Lấy ngày được chọn từ request, nếu không có thì chọn ngày đầu tiên
-        $selectedDate = $request->input('date');
-
-        // Nếu không có ngày được chọn hoặc ngày đã qua hoặc không nằm trong danh sách ngày hợp lệ, chọn ngày đầu tiên
-        if (!$selectedDate || !$dates->contains($selectedDate)) {
-            $selectedDate = $dates->first();
+        // Nếu không còn ngày nào (vì tất cả đã qua), thì không load phim
+        if ($dates->isEmpty()) {
+            return view('client.moive', [
+                'movies' => collect(),
+                'dates' => collect(),
+                'selectedDate' => null,
+            ]);
         }
+
+        // Lấy ngày được chọn, mặc định là ngày đầu tiên
+        $selectedDate = $request->input('date', $dates->first());
 
         // Lấy các phim có suất chiếu trong ngày được chọn
         $movies = Movie::whereHas('showtimes', function ($q) use ($selectedDate) {

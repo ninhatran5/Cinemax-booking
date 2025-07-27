@@ -1,14 +1,35 @@
 @extends('layout')
 
 @section('content')
+    <style>
+        .date-tab {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 10px;
+            color: #6c757d;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+
+        .date-tab:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .date-tab.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+    </style>
     @include('client.block.slide')
     <div class="container">
         <br>
         <h2>Phim đang chiếu</h2>
         <div class="d-flex mb-3">
             @foreach ($dates as $date)
-                <a href="{{ route('client.home', ['date' => $date]) }}"
-                    class="btn me-2 {{ $selectedDate == $date ? 'btn-primary' : 'btn-outline-primary' }}">
+                <a href="{{ route('client.movie', ['date' => $date]) }}"
+                    class="date-tab {{ $selectedDate == $date ? 'active' : '' }}">
                     {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                 </a>
             @endforeach
@@ -23,7 +44,6 @@
             use Carbon\Carbon;
             $now = Carbon::now();
         @endphp
-
         <div class="row">
             @foreach ($movies as $movie)
                 <div class="col-md-6 mb-4">
@@ -45,16 +65,20 @@
                             <!-- Suất chiếu -->
                             @foreach ($movie->showtimes as $showtime)
                                 @php
-                                    $showtimeTime = Carbon::parse($showtime->start_time);
-                                    $isPast = $showtimeTime <= $now;
+                                    // Parse ngày giờ chiếu từ DB
+                                    $showDateTime = Carbon::parse($showtime->show_date . ' ' . $showtime->start_time);
+
+                                    // Nếu hôm nay và giờ chiếu < hiện tại ⇒ disable
+                                    $isToday = $showDateTime->isSameDay($now);
+                                    $isExpired = $isToday && $showDateTime->lt($now);
                                 @endphp
 
                                 <button class="btn btn-sm mb-2 me-2"
-                                    style="background-color: {{ $isPast ? '#ffc107' : '#28a745' }};
-                                   color: {{ $isPast ? '#000' : '#fff' }};"
-                                    {{ $isPast ? 'disabled' : '' }}
-                                    onclick="{{ $isPast ? '' : "openSeatModal($showtime->id)" }}">
-                                    {{ $showtimeTime->format('H:i') }}
+                                    style="background-color: {{ $isExpired ? '#ffc107' : '#28a745' }};
+               color: {{ $isExpired ? '#000' : '#fff' }};"
+                                    {{ $isExpired ? 'disabled' : '' }}
+                                    onclick="{{ $isExpired ? '' : "openSeatModal($showtime->id)" }}">
+                                    {{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                 </button>
                             @endforeach
                         </div>
