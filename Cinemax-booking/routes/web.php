@@ -138,3 +138,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ve/{booking}', [ClientBookingController::class, 'showBooking'])->name('client.booking.show');
     Route::get('/lich-su-dat-ve', [ClientBookingController::class, 'history'])->name('client.booking.history');
 });
+// tìm kiếm
+Route::get('/search', [HomeController::class, 'search'])->name('client.search');
