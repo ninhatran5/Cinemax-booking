@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\SeatTypeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\ClientBookingController;
 use App\Http\Controllers\Client\ClientGiaVeController;
 use App\Http\Controllers\Client\ClientGioiThieuController;
@@ -95,6 +96,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('seat-types', SeatTypeController::class);
         Route::post('seat-types/{id}/restore', [SeatTypeController::class, 'restore'])->name('seat-types.restore');
         Route::delete('seat-types/{id}/force', [SeatTypeController::class, 'forceDelete'])->name('seat-types.force-delete');
+        // quản lý user
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/store', [UserController::class, 'store'])->name('store');
+            Route::patch('/change-role/{id}', [UserController::class, 'changeRole'])->name('changeRole');
+        });
     });
 });
 
