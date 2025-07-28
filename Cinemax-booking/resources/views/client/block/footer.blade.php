@@ -59,25 +59,22 @@
 
             <div class="col-md-2 col-sm-6">
                 <div class="footer-menu">
-                    <h5 class="widget-title">Ultras</h5>
+                    <h5 class="widget-title">Cinemax</h5>
                     <ul class="menu-list list-unstyled">
                         <li class="menu-item">
-                            <a href="#" class="nav-link">About us</a>
+                            <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Conditions </a>
+                            <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Our Journals</a>
+                            <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Careers</a>
+                            <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Affiliate Programme</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="nav-link">Ultras Press</a>
+                            <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -87,22 +84,19 @@
                     <h5 class="widget-title">Customer Service</h5>
                     <ul class="menu-list list-unstyled">
                         <li class="menu-item">
-                            <a href="#" class="nav-link">FAQ</a>
+                            <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Contact</a>
+                            <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Privacy Policy</a>
+                            <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Returns & Refunds</a>
+                            <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Cookie Guidelines</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="nav-link">Delivery Information</a>
+                            <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -112,22 +106,19 @@
                     <h5 class="widget-title">Customer Service</h5>
                     <ul class="menu-list list-unstyled">
                         <li class="menu-item">
-                            <a href="#" class="nav-link">FAQ</a>
+                            <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Contact</a>
+                            <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Privacy Policy</a>
+                            <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Returns & Refunds</a>
+                            <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="nav-link">Cookie Guidelines</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="nav-link">Delivery Information</a>
+                            <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -139,7 +130,7 @@
                     <form class="d-flex mt-3 gap-0" role="newsletter">
                         <input class="form-control rounded-start rounded-0 bg-light" type="email"
                             placeholder="Email Address" aria-label="Email Address">
-                        <button class="btn btn-dark rounded-end rounded-0" type="submit">Subscribe</button>
+                        <button class="btn btn-dark rounded-end rounded-0" type="submit"><a href="{{ route('client.lienhe') }}" class="nav-link">Subscribe</a></button>
                     </form>
                 </div>
             </div>
