@@ -13,6 +13,9 @@ use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Client\ClientBookingController;
+use App\Http\Controllers\Client\ClientGiaVeController;
+use App\Http\Controllers\Client\ClientGioiThieuController;
+use App\Http\Controllers\Client\ClientLienHeController;
 use App\Http\Controllers\Client\ClientMovieController;
 
 /*
@@ -103,6 +106,9 @@ CLIENT ROUTES
 // Trang chủ client
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
 Route::get('/movie', [ClientMovieController::class, 'index'])->name('client.movie');
+Route::get('/giave', [ClientGiaVeController::class, 'index'])->name('client.giave');
+Route::get('/gioithieu', [ClientGioiThieuController::class, 'index'])->name('client.gioithieu');
+Route::get('/lienhe', [ClientLienHeController::class, 'index'])->name('client.lienhe');
 
 
 // Đăng nhập

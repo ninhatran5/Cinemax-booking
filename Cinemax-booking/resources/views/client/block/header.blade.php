@@ -199,7 +199,7 @@
                                     <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#kids" class="nav-link">Giá Vé</a>
+                                    <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
                                 </li>
                                 {{-- <li class="nav-item">
                                     <a href="#accessories" class="nav-link">Phiếu Giảm Giá</a>
@@ -214,10 +214,10 @@
                                     </ul>
                                 </li> --}}
                                 <li class="nav-item">
-                                    <a href="#brand" class="nav-link">Giới Thiệu</a>
+                                    <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#sale" class="nav-link">Liên Hệ</a>
+                                    <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
                                 </li>
                             </ul>
                         </div>
