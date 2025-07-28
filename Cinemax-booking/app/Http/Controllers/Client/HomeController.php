@@ -47,4 +47,13 @@ class HomeController extends Controller
 
         return view('client.home', compact('banners', 'movies', 'dates', 'selectedDate'));
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Tìm kiếm phim theo tên (title)
+        $movies = Movie::where('title', 'LIKE', "%{$query}%")->get();
+
+        return view('client.search_results', compact('movies', 'query'));
+    }
 }
