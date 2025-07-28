@@ -18,10 +18,10 @@
     <ul class="menu-inner py-1">
 
         <!-- Dashboards -->
-        <li class="menu-item {{ $routePrefix == 'admin.home' ? 'active' : '' }}">
-            <a href="{{ route('admin.home') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div>Dashboards</div>
+        <li class="menu-item {{ Str::startsWith($routePrefix, 'admin.statistics') ? 'active' : '' }}">
+            <a href="{{ route('admin.statistics.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+                <div>Thống kê</div>
             </a>
         </li>
 

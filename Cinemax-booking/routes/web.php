@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\SeatTypeController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\ClientBookingController;
 use App\Http\Controllers\Client\ClientGiaVeController;
@@ -103,6 +104,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/store', [UserController::class, 'store'])->name('store');
             Route::patch('/change-role/{id}', [UserController::class, 'changeRole'])->name('changeRole');
         });
+        // QUẢN LÝ THỐNG KÊ
+        Route::get('/statistics', [StatisticsController::class, 'index'])
+            ->name('statistics.index');
     });
 });
 
