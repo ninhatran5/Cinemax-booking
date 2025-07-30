@@ -137,6 +137,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dat-ve/{id}', [ClientBookingController::class, 'storeBooking'])->name('client.booking.store');
     Route::get('/ve/{booking}', [ClientBookingController::class, 'showBooking'])->name('client.booking.show');
     Route::get('/lich-su-dat-ve', [ClientBookingController::class, 'history'])->name('client.booking.history');
+    Route::get('/vnpay/return', [ClientBookingController::class, 'vnpayReturn'])->name('client.vnpay.return');
 });
 // tìm kiếm
 Route::get('/search', [HomeController::class, 'search'])->name('client.search');
+
+Route::get('/thanh-toan/thanh-cong/{booking}', function($booking) {
+    return view('client.payment_success', ['booking' => $booking]);
+})->name('client.payment.success');
+
+Route::get('/thanh-toan/that-bai', function() {
+    return view('client.payment_failed');
+})->name('client.payment.failed');

@@ -57,8 +57,8 @@
 <div class="modal-body">
     <form action="{{ route('client.booking.store', $showtime->id) }}" method="POST">
         @csrf
+        
         <div class="row">
-            <!-- Bên trái: ghế -->
             <div class="col-md-10">
                 @php
                     $seatsByRow = $showtime->room->seats->groupBy('row');
@@ -85,7 +85,6 @@
                 @endforeach
             </div>
 
-            <!-- Bên phải: thông tin -->
             <div class="col-md-2 info-section">
                 <p><strong>Phim:</strong> {{ $showtime->movie->title }}</p>
                 <p><strong>Phòng:</strong> {{ $showtime->room->name }}</p>
@@ -112,7 +111,7 @@
                 </div>
 
                 @auth
-                    <button type="submit" class="btn btn-warning w-100">Xác nhận đặt vé</button>
+                    <button type="submit" class="btn btn-warning w-100">Thanh toán qua VNPAY</button>
                 @else
                     <a href="{{ route('client.login') }}" class="btn btn-danger w-100">Đăng nhập để đặt vé</a>
                 @endauth
