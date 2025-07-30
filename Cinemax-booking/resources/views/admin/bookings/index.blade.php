@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Mã Đơn</th>
             <th>Khách hàng</th>
             <th>Suất chiếu</th>
             <th>Thời gian đặt</th>
@@ -18,6 +19,7 @@
         @foreach($bookings as $booking)
         <tr>
             <td>{{ $booking->id }}</td>
+            <td>{{ $booking->order_code }}</td>
             <td>{{ $booking->user->name ?? 'N/A' }}</td>
             <td>{{ $booking->showtime->id ?? 'N/A' }}</td>
             <td>{{ $booking->booking_time }}</td>

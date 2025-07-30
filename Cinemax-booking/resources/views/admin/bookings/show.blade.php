@@ -3,6 +3,7 @@
 @section('content')
     <h1>Chi tiết đặt vé #{{ $booking->id }}</h1>
     <ul>
+        <li>Mã Đơn: {{ $booking->order_code}}</li>
         <li>Khách hàng: {{ $booking->user->name ?? 'N/A' }}</li>
         <li>Suất chiếu: {{ $booking->showtime->id ?? 'N/A' }}</li>
         <li>Thời gian đặt: {{ $booking->booking_time }}</li>

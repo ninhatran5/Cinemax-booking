@@ -39,7 +39,8 @@
                 <table class="table table-striped align-middle table-bordered border-light bg-white">
                     <thead class="table-light text-center">
                         <tr>
-                            <th>#</th>
+                            <th>STT</th>
+                            <th>Mã Đặt vé</th>
                             <th>Phim</th>
                             <th>Phòng</th>
                             <th>Suất chiếu</th>
@@ -53,6 +54,7 @@
                         @foreach ($bookings as $index => $booking)
                             <tr class="text-center">
                                 <td>{{ $index + 1 }}</td>
+                                <td>{{ $booking->order_code }}</td>
                                 <td class="text-start">{{ $booking->showtime->movie->title }}</td>
                                 <td>{{ $booking->showtime->room->name }}</td>
                                 <td>{{ \Carbon\Carbon::parse($booking->showtime->start_time)->format('H:i d/m/Y') }}</td>
