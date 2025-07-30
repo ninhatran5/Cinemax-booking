@@ -38,7 +38,7 @@
             <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                 <!-- Notification -->
-                <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
+                {{-- <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" aria-expanded="false">
                         <i class="bx bx-bell bx-sm"></i>
@@ -260,7 +260,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <!--/ Notification -->
 
                 <!-- User -->
@@ -281,21 +281,21 @@
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-medium d-block lh-1">John Doe</span>
+                                        {{-- <span class="fw-medium d-block lh-1">John Doe</span> --}}
                                         <small>Admin</small>
                                     </div>
                                 </div>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <div class="dropdown-divider"></div>
-                        </li>
-                        <li>
+                        </li> --}}
+                        {{-- <li>
                             <a class="dropdown-item" href="pages-profile-user.html">
                                 <i class="bx bx-user me-2"></i>
                                 <span class="align-middle">My Profile</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>
