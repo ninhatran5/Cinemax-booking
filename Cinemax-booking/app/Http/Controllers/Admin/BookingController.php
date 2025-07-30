@@ -13,13 +13,16 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::with(['user', 'showtime'])->orderBy('created_at', 'desc')->paginate(20);
+        $bookings = \App\Models\Booking::where('payment_status', 'paid')->with(['user', 'showtime'])->paginate(20);
         return view('admin.bookings.index', compact('bookings'));
     }
 
     public function show($id)
     {
-        $booking = Booking::with(['user', 'showtime', 'bookingSeats.seat'])->findOrFail($id);
+        $booking = \App\Models\Booking::where('id', $id)
+            ->where('payment_status', 'paid')
+            ->with(['user', 'showtime', 'bookingSeats.seat.seatType'])
+            ->firstOrFail();
         return view('admin.bookings.show', compact('booking'));
     }
 

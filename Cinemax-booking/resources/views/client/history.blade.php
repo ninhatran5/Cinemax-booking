@@ -1,86 +1,41 @@
 @extends('layout')
 
 @section('content')
-    <style>
-        .table thead th {
-            background-color: #f8f9fa;
-            color: #000;
-        }
-
-        .badge {
-            font-size: 85%;
-            padding: 6px 8px;
-            border-radius: 6px;
-        }
-
-        /* Bỏ hiệu ứng hover */
-        .table tbody tr {
-            background-color: #ffffff;
-        }
-
-        .table-bordered> :not(caption)>*>* {
-            border-color: #dee2e6;
-        }
-
-        .btn-outline-primary {
-            border-radius: 4px;
-        }
-    </style>
-
-    <div class="container my-4">
-        <h3 class="mb-4 text-primary">🕘 Lịch sử đặt vé</h3>
-
-        @if ($bookings->isEmpty())
-            <div class="alert alert-secondary text-center">
-                Bạn chưa có đặt vé nào.
-            </div>
-        @else
-            <div class="table-responsive shadow-sm rounded">
-                <table class="table table-striped align-middle table-bordered border-light bg-white">
-                    <thead class="table-light text-center">
-                        <tr>
-                            <th>#</th>
-                            <th>Phim</th>
-                            <th>Phòng</th>
-                            <th>Suất chiếu</th>
-                            <th>Ghế đã đặt</th>
-                            <th>Tổng tiền</th>
-                            <th>Đặt lúc</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($bookings as $index => $booking)
-                            <tr class="text-center">
-                                <td>{{ $index + 1 }}</td>
-                                <td class="text-start">{{ $booking->showtime->movie->title }}</td>
-                                <td>{{ $booking->showtime->room->name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($booking->showtime->start_time)->format('H:i d/m/Y') }}</td>
-                                <td class="text-start">
-                                    @foreach ($booking->seats as $seat)
-                                        <span class="badge bg-light border" style="color: black">
-                                            {{ $seat->name }} ({{ $seat->seatType->name ?? 'N/A' }})
-                                        </span>
-                                        {{ !$loop->last ? ',' : '' }}
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <strong class=" fw-bold" style="color: red">
-                                        {{ number_format($booking->total_price, 0, ',', '.') }}đ
-                                    </strong>
-                                </td>
-                                <td>{{ \Carbon\Carbon::parse($booking->booking_time)->format('H:i d/m/Y') }}</td>
-                                <td>
-                                    <a href="{{ route('client.booking.show', $booking->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                        Chi tiết
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
-    </div>
+<div class="container mt-4">
+    <h2>Lịch sử đặt vé</h2>
+    
+    @php
+        $paidBookings = $bookings->where('payment_status', 'paid');
+    @endphp
+    @if($paidBookings->count() > 0)
+        <div class="row">
+            @foreach($paidBookings as $booking)
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $booking->showtime->movie->title }}</h5>
+                            <p class="card-text">
+                                <strong>Phòng:</strong> {{ $booking->showtime->room->name }}<br>
+                                <strong>Suất chiếu:</strong> {{ $booking->showtime->start_time }}<br>
+                                <strong>Ghế:</strong> 
+                                @foreach($booking->bookingSeats as $bookingSeat)
+                                    {{ $bookingSeat->seat->name }}{{ !$loop->last ? ', ' : '' }}
+                                @endforeach
+                                <br>
+                                <strong>Tổng tiền:</strong> {{ number_format($booking->total_price) }}đ<br>
+                                <strong>Mã đơn:</strong> {{ $booking->order_code }}<br>
+                                <span class="badge bg-success">Đã thanh toán</span>
+                            </p>
+                            <a href="{{ route('client.booking.show', $booking->id) }}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="alert alert-info">
+            Bạn chưa có vé nào.
+        </div>
+    @endif
+</div>
 @endsection

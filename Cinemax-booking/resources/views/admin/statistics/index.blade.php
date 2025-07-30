@@ -25,6 +25,10 @@
             </div>
         </div>
 
+        @if($totalRevenue == 0)
+            <div class="alert alert-warning mt-3">Chưa có doanh thu nào được ghi nhận!</div>
+        @endif
+
         <canvas id="revenueChart" height="100"></canvas>
 
         <h3 class="mt-4">Top 5 phim doanh thu cao nhất</h3>
@@ -36,12 +40,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($topMovies as $movie)
+                @forelse ($topMovies as $movie)
                     <tr>
                         <td>{{ $movie->title }}</td>
                         <td>{{ number_format($movie->revenue) }} đ</td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="2" class="text-center">Chưa có dữ liệu</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -49,13 +57,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('revenueChart');
+        const labels = {!! json_encode(array_keys($monthlyRevenue->toArray())) !!};
+        const data = {!! json_encode(array_values($monthlyRevenue->toArray())) !!};
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: {!! json_encode(array_keys($monthlyRevenue->toArray())) !!},
+                labels: labels.length ? labels : ['Không có dữ liệu'],
                 datasets: [{
                     label: 'Doanh thu theo tháng',
-                    data: {!! json_encode(array_values($monthlyRevenue->toArray())) !!},
+                    data: data.length ? data : [0],
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                 }]
             }
