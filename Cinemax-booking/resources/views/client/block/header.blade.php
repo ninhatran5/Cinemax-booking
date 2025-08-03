@@ -71,24 +71,30 @@
         margin-bottom: 0;
     }
 
+    /* Menu hiển thị hàng ngang */
+    .menu-list {
+        flex-direction: row !important;
+        white-space: nowrap;
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem !important;
+    }
+
     .menu-list .nav-link {
-        font-size: 12px;
-        /* Nhỏ hơn mặc định */
+        font-size: 13px;
         padding: 5px 10px;
-        /* Ít padding hơn */
     }
 
     .menu-list .dropdown-menu {
         font-size: 12px;
-        /* Dropdown cũng nhỏ hơn */
-    }
-
-    .menu-list {
-        gap: 0.75rem !important;
-        /* Giảm khoảng cách giữa các mục */
     }
 
     @media (max-width: 576px) {
+        .menu-list {
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
         .menu-list .nav-link {
             font-size: 13px;
         }
@@ -125,7 +131,6 @@
                 </form>
             </div>
 
-
             <div
                 class="col-sm-8 col-lg-4 d-flex justify-content-end gap-4 align-items-center mt-3 mt-sm-0 justify-content-center justify-content-sm-end">
                 <div class="support-box text-end d-none d-xl-block">
@@ -152,7 +157,6 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    {{-- <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li> --}}
                                     <li><a class="dropdown-item" href="{{ route('client.booking.history') }}">Lịch sử đặt
                                             vé</a></li>
                                     <li>
@@ -181,49 +185,28 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation: luôn hiển thị hàng ngang -->
     <div class="container-fluid">
         <div class="row py-2">
-            <div class="d-flex justify-content-center justify-content-sm-between align-items-center">
-                <nav class="main-menu d-flex navbar navbar-expand-lg">
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                        aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header justify-content-center">
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-                                <li class="nav-item active">
-                                    <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
-                                </li>
-                                {{-- <li class="nav-item">
-                                    <a href="#accessories" class="nav-link">Phiếu Giảm Giá</a>
-                                </li> --}}
-                                {{-- <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" role="button" id="pages"
-                                        data-bs-toggle="dropdown" aria-expanded="false">Thể Loại Phim</a>
-                                    <ul class="dropdown-menu" aria-labelledby="pages">
-                                        <li><a href="#" class="dropdown-item">Hành Động</a></li>
-                                        <li><a href="#" class="dropdown-item">Hài</a></li>
-                                        <li><a href="#" class="dropdown-item">Tình Cảm</a></li>
-                                    </ul>
-                                </li> --}}
-                                <li class="nav-item">
-                                    <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <nav class="main-menu d-flex w-100 justify-content-center">
+                    <ul class="navbar-nav menu-list list-unstyled d-flex mb-0">
+                        <li class="nav-item active">
+                            <a href="{{ route('client.home') }}" class="nav-link">Trang Chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('client.movie') }}" class="nav-link">Phim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('client.giave') }}" class="nav-link">Giá Vé</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('client.gioithieu') }}" class="nav-link">Giới Thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('client.lienhe') }}" class="nav-link">Liên Hệ</a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </div>

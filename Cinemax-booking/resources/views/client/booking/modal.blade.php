@@ -1,16 +1,34 @@
 <style>
     .modal-dialog {
-        max-width: 1500px;
+        max-width: 95%;
+        /* Cho PC và mobile đều vừa */
+    }
+
+    @media (min-width: 992px) {
+        .modal-dialog {
+            max-width: 1500px;
+            /* Trên màn lớn */
+        }
     }
 
     .btn-seat-available {
-        background-color: #28a745;
-        color: #fff;
+        background-color: #28a745 !important;
+        color: #fff !important;
     }
 
     .btn-seat-selected {
-        background-color: #ffc107;
-        color: #000;
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    .btn-check:checked+.btn-seat {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    .btn-check:not(:checked)+.btn-seat.btn-seat-available {
+        background-color: #28a745 !important;
+        color: #fff !important;
     }
 
     .seat-row {
@@ -57,7 +75,7 @@
 <div class="modal-body">
     <form action="{{ route('client.booking.store', $showtime->id) }}" method="POST">
         @csrf
-        
+
         <div class="row">
             <div class="col-md-10">
                 @php
