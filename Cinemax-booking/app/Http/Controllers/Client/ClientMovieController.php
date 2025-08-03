@@ -23,7 +23,7 @@ class ClientMovieController extends Controller
 
         // Nếu không còn ngày nào (vì tất cả đã qua), thì không load phim
         if ($dates->isEmpty()) {
-            return view('client.moive', [
+            return view('client.movie', [
                 'movies' => collect(),
                 'dates' => collect(),
                 'selectedDate' => null,

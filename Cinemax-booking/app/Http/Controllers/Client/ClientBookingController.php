@@ -58,28 +58,17 @@ class ClientBookingController extends Controller
 
         // Tạo mã đơn
         $bookingCode = 'CINEMAX' . strtoupper(uniqid());
-        $booking = Booking::create([
+
+        // Truyền thông tin booking qua vnp_OrderInfo (json encode)
+        $orderInfo = json_encode([
             'user_id' => Auth::id(),
             'showtime_id' => $showtimeId,
-            'booking_time' => now(),
+            'seat_ids' => $selectedSeatIds,
             'total_price' => $total,
-            'order_code' => $bookingCode,
-            'payment_status' => 'pending',
+            'booking_code' => $bookingCode,
         ]);
 
-        foreach ($selectedSeatIds as $seatId) {
-            $seat = Seat::with('type')->find($seatId);
-            BookingSeat::create([
-                'booking_id' => $booking->id,
-                'seat_id' => $seatId,
-                'price' => $seat->type->price ?? 0,
-            ]);
-        }
-
-        // Dispatch job để hủy booking sau 3 phút nếu không thanh toán
-        CancelPendingBooking::dispatch($booking->id)->delay(now()->addMinutes(3));
-
-        // ✅ VNPay Config
+        // VNPay Config
         $vnp_TmnCode = config('vnpay.tmn_code');
         $vnp_HashSecret = config('vnpay.hash_secret');
         $vnp_Url = config('vnpay.url');
@@ -94,15 +83,13 @@ class ClientBookingController extends Controller
             "vnp_CurrCode" => "VND",
             "vnp_IpAddr" => $request->ip(),
             "vnp_Locale" => "vn",
-            "vnp_OrderInfo" => "Thanh toan don hang " . $bookingCode,
+            "vnp_OrderInfo" => $orderInfo,
             "vnp_OrderType" => "billpayment",
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $bookingCode,
         ];
 
         ksort($inputData);
-
-        // Build hash string đúng chuẩn VNPay
         $query = [];
         foreach ($inputData as $key => $value) {
             if ($value !== null && $value !== '') {
@@ -110,9 +97,7 @@ class ClientBookingController extends Controller
             }
         }
         $hashData = implode('&', $query);
-
         $vnp_SecureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-
         $paymentUrl = $vnp_Url . '?' . implode('&', $query)
             . '&vnp_SecureHashType=SHA512&vnp_SecureHash=' . $vnp_SecureHash;
 
@@ -127,11 +112,10 @@ class ClientBookingController extends Controller
     public function vnpayReturn(Request $request)
     {
         Log::info('VNPay Return Data: ' . json_encode($request->all()));
-        
+
         $vnp_HashSecret = config('vnpay.hash_secret');
         $inputData = $request->except(['vnp_SecureHash', 'vnp_SecureHashType']);
         ksort($inputData);
-
         $query = [];
         foreach ($inputData as $key => $value) {
             if ($value !== null && $value !== '') {
@@ -139,7 +123,6 @@ class ClientBookingController extends Controller
             }
         }
         $hashData = implode('&', $query);
-
         $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
 
         Log::info('VNPay Return HashData: ' . $hashData);
@@ -147,15 +130,41 @@ class ClientBookingController extends Controller
         Log::info('VNPay Return Expected Hash: ' . $request->vnp_SecureHash);
         Log::info('VNPay Response Code: ' . $request->vnp_ResponseCode);
 
-        $booking = Booking::where('order_code', $request->vnp_TxnRef)->first();
+        // Giải mã thông tin booking từ vnp_OrderInfo
+        $orderInfo = json_decode($request->vnp_OrderInfo, true);
 
-        if ($booking && $secureHash === $request->vnp_SecureHash && $request->vnp_ResponseCode == '00') {
-            $booking->update(['payment_status' => 'paid']);
+        if ($orderInfo && $secureHash === $request->vnp_SecureHash && $request->vnp_ResponseCode == '00') {
+            // Kiểm tra lại ghế đã đặt chưa (tránh double booking)
+            $alreadyBookedSeatIds = BookingSeat::whereIn('seat_id', $orderInfo['seat_ids'])
+                ->whereHas('booking', function ($q) use ($orderInfo) {
+                    $q->where('showtime_id', $orderInfo['showtime_id'])
+                      ->where('payment_status', 'paid');
+                })
+                ->pluck('seat_id')
+                ->toArray();
+            if ($alreadyBookedSeatIds) {
+                return redirect('/thanh-toan/that-bai')->withErrors(['seats' => 'Ghế đã đặt: ' . implode(', ', $alreadyBookedSeatIds)]);
+            }
+            // Tạo booking
+            $booking = Booking::create([
+                'user_id' => $orderInfo['user_id'],
+                'showtime_id' => $orderInfo['showtime_id'],
+                'booking_time' => now(),
+                'total_price' => $orderInfo['total_price'],
+                'order_code' => $orderInfo['booking_code'],
+                'payment_status' => 'paid',
+            ]);
+            // Tạo booking_seat
+            foreach ($orderInfo['seat_ids'] as $seatId) {
+                $seat = Seat::with('type')->find($seatId);
+                BookingSeat::create([
+                    'booking_id' => $booking->id,
+                    'seat_id' => $seatId,
+                    'price' => $seat->type->price ?? 0,
+                ]);
+            }
             return redirect('/thanh-toan/thanh-cong/' . $booking->id);
         } else {
-            if ($booking) {
-                $booking->update(['payment_status' => 'failed']);
-            }
             return redirect('/thanh-toan/that-bai');
         }
     }
