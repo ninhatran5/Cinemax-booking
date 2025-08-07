@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\HomeAdminController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
@@ -35,9 +36,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     // Nhóm route cần kiểm tra IsAdmin middleware
     Route::middleware([IsAdmin::class])->group(function () {
-        Route::get('/home', function () {
-            return view('admin.home');
-        })->name('home');
+        // Route::get('/home', function () {
+        //     return view('admin.home');
+        // })->name('home');
+        Route::get('/', [HomeAdminController::class, 'home'])->name('home');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -142,10 +144,10 @@ Route::middleware(['auth'])->group(function () {
 // tìm kiếm
 Route::get('/search', [HomeController::class, 'search'])->name('client.search');
 
-Route::get('/thanh-toan/thanh-cong/{booking}', function($booking) {
+Route::get('/thanh-toan/thanh-cong/{booking}', function ($booking) {
     return view('client.payment_success', ['booking' => $booking]);
 })->name('client.payment.success');
 
-Route::get('/thanh-toan/that-bai', function() {
+Route::get('/thanh-toan/that-bai', function () {
     return view('client.payment_failed');
 })->name('client.payment.failed');
