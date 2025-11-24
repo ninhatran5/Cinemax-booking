@@ -16,7 +16,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('cinemax/css/vendor.css') }}">
     <link rel="stylesheet" href="{{ asset('cinemax/css/style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('cinemax/images/logo.png') }}" style="width: 350px" />
+    {{-- <link rel="icon" type="image/x-icon" href="{{ asset('cinemax/images/logo.png') }}" style="width: 350px" /> --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
